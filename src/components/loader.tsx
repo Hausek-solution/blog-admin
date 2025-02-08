@@ -21,7 +21,7 @@ const LoadingSpinner = ({
     return (
         <>
             <BeatLoader
-                color={color ? color : "#7C3AED"}
+                color={color ? color : "#132A23"}
                 loading={loading}
                 speedMultiplier={1.5}
                 aria-label="Loading spinner"

@@ -1,12 +1,17 @@
 import { cn } from "../../lib/utils"
 import { ArticleResponseType, RecentArticles } from "../../types/article-type"
+import { Button } from "../../components/ui/button"
+import { Link } from "react-router-dom"
+import { ApplicationRoutes } from "../../routes/routes-constant"
+
 
 type ArticleCardProps = {
     data: ArticleResponseType,
-    displayLayout: "list" | "grid"
+    displayLayout: "list" | "grid",
+    scheduledBtn: React.MutableRefObject<HTMLDivElement>
 }
 
-const ArticleCard = ({ data, displayLayout}: ArticleCardProps) => {
+const ArticleCard = ({ data, displayLayout, scheduledBtn}: ArticleCardProps) => {
 
     return (
         <>
@@ -61,18 +66,19 @@ const ArticleCard = ({ data, displayLayout}: ArticleCardProps) => {
 
                         <div className="flex items-center space-x-2">
                             { data.status === "draft" &&
-                                <p className="text-base text-secondary font-medium">Continue editing</p>
+                                <Link to={`${ApplicationRoutes.PRE_UPDATE}/${data.slug}`} className="text-base text-secondary font-medium">Continue editing</Link>
                             }
                             { data.status === "published" &&
                                 <p className="text-base text-secondary font-medium">View</p>
                             }
                             { data.status === "scheduled" &&
-                                <p className="text-base text-secondary font-medium">See schedule</p>
+                                <p onClick={() => {scheduledBtn.current.click()}} className="text-base text-secondary font-medium">See schedule</p>
                             }
                         </div>
                     </div>
                 </div>
             </div>
+
         </>
     )
 }
