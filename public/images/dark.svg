@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW 2021 (64-Bit) -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="1.34in" height="0.252894in" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 123.63 23.33"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
+ <defs>
+  <font id="FontID0" horiz-adv-x="652" font-variant="normal" style="fill-rule:nonzero" font-style="normal" font-weight="500">
+	<font-face 
+		font-family="Bricolage Grotesque Medium">
+		<font-face-src>
+			<font-face-name name="Bricolage Grotesque Medium"/>
+		</font-face-src>
+	</font-face>
+   <missing-glyph><path d="M0 0z"/></missing-glyph>
+   <glyph unicode="A" horiz-adv-x="652" d="M18.9925 0l119.013 0 44.9998 140.996 286.987 0 46.0019 -140.996 118.011 0 -230.009 659.997 -153.992 0 -231.012 -659.997zm303.005 569.997l10.0052 0 111.998 -348.005 -235.004 0 113 348.005z"/>
+   <glyph unicode="E" horiz-adv-x="575" d="M70.0049 0l469.992 0 0 92.0038 -359.998 0 0 199.994 312.008 0 0 86.007 -312.008 0 0 189.988 358.996 0 0 92.0038 -468.99 0 0 -659.997z"/>
+   <glyph unicode="H" horiz-adv-x="679" d="M70.0049 0l108.992 0 0 289.007 321.011 0 0 -289.007 108.992 0 0 659.997 -108.992 0 0 -279.002 -321.011 0 0 279.002 -108.992 0 0 -659.997z"/>
+   <glyph unicode="K" horiz-adv-x="641" d="M70.0049 0l108.992 0 0 266.992 58.9976 0c146.007,0 189.002,-61.988 222.008,-164.999l28.9977 -101.993 122.004 0 -44.9998 132.995c-42.0093,111.998 -101.007,192.009 -253.01,191.006l0 10.9915c129.002,48.0061 250.004,176.006 291.011,325.004l-122.004 0c-32.0041,-129.989 -151.001,-260.995 -303.005,-305.995l0 305.995 -108.992 0 0 -659.997z"/>
+   <glyph unicode="S" horiz-adv-x="617" d="M310.004 -12.9957c171.998,0 266.992,72.9954 266.992,190.991 0,140.01 -128,173 -242.003,199.007 -93.9921,20.9967 -175.991,40.0051 -175.991,109.994 0,58.0114 54.0029,96.9984 137.99,96.9984 95.0101,0 157.014,-47.9902 154.008,-138.992l101.007 23.0009c0.986209,131.993 -103.011,204.988 -253.01,204.988 -151.001,0 -244.993,-75.9858 -244.993,-192.995 0,-138.992 130.005,-170.996 251.992,-198.005 88.9974,-20.9967 164.999,-39.9892 164.999,-106.988 0,-58.0114 -56.9933,-98.0005 -155.996,-98.0005 -102.995,0 -176.993,43.9976 -171.998,149.999l-99.0027 -24.0031c-4.99467,-140.996 95.0101,-215.996 266.006,-215.996z"/>
+   <glyph unicode="U" horiz-adv-x="683" d="M342.008 -13.9978c175.991,0 275.995,94.9942 275.995,267.994l0 406 -109.008 0 0 -400.989c0,-104.999 -46.9881,-174.002 -166.987,-174.002 -117.009,0 -166.001,68.0007 -166.001,174.002l0 400.989 -110.01 0 0 -406c0,-166.001 94.008,-267.994 276.011,-267.994z"/>
+  </font>
+  <style type="text/css">
+   <![CDATA[
+    @font-face { font-family:"Bricolage Grotesque Medium";font-variant:normal;font-style:normal;font-weight:500;src:url("#FontID0") format(svg)}
+    .fil0 {fill:#132A23}
+    .fnt0 {font-weight:500;font-size:22.84px;font-family:'Bricolage Grotesque Medium'}
+   ]]>
+  </style>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <path class="fil0" d="M11.48 0.08l-11.45 9.36 -0.03 0.02 0 13.87 0.19 0 11.26 0c0.01,-0.01 0.02,-0.01 0.03,-0.02 3.87,-3.16 7.74,-6.33 11.61,-9.49 0,-2.55 0,-5.1 0,-7.65 0,-2.05 0,-4.11 0,-6.16 -3.84,0 -7.67,0 -11.51,0 -0.03,0.03 -0.07,0.05 -0.1,0.08zm20.2 5.22c0,4.56 0,9.13 0,13.69l-6.33 -5.17 0 -8.52 6.33 0z"/>
+  <text x="37.08" y="19.19"  class="fil0 fnt0">HAUSEK</text>
+ </g>
+</svg>
