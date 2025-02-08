@@ -3,7 +3,7 @@ export const ApplicationRoutes = {
     DASHBOARD: "/dashboard",
 
     CREATE_ARTICLE: "/create-article",
-    UPDATE_ARTICLE: "/update-article",
+    UPDATE_ARTICLE: "/update-article/:article-slug",
 
     ALL_ARTICLES: "/articles",
 
