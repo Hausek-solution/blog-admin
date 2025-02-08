@@ -1,5 +1,4 @@
 import { ReactNode } from "react"
-import Header from "../header/header"
 import { SidebarProvider, SidebarTrigger } from "../ui/sidebar"
 import AppSidebar from "./app-sidebar"
 
