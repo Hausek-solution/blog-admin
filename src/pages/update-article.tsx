@@ -40,11 +40,13 @@ const UpdateArticlePage = () => {
             },
             autofocus: true,
             inlineToolbar: ['link', 'marker', 'bold', 'italic'],
+            //@ts-ignore
             logLevel: "ERROR",
             tools: {
                 paragraph: {
                     class: Paragraph,
                     inlineToolbar: true,
+                    //@ts-ignore
                     placeholder: "Start typing"
                 },
                 header: {
@@ -56,6 +58,7 @@ const UpdateArticlePage = () => {
                     },
                 },
                 table: {
+                    //@ts-ignore
                     class: Table,
                     inlineToolbar: true,
                     config: {
