@@ -11,6 +11,13 @@
     "tailwind": "npx tailwindcss -i ./src/assets/css/input.css -o ./src/assets/css/output.css --watch"
   },
   "dependencies": {
+    "@editorjs/editorjs": "^2.30.8",
+    "@editorjs/header": "^2.8.8",
+    "@editorjs/image": "^2.10.2",
+    "@editorjs/list": "^2.0.4",
+    "@editorjs/paragraph": "^2.11.7",
+    "@editorjs/quote": "^2.7.6",
+    "@editorjs/table": "^2.4.3",
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-checkbox": "^1.1.1",
@@ -45,6 +52,7 @@
     "cmdk": "1.0.0",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
+    "editorjs-drag-drop": "^1.1.16",
     "embla-carousel-autoplay": "^8.5.2",
     "embla-carousel-react": "^8.3.0",
     "formik": "^2.4.6",
