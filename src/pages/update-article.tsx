@@ -1,5 +1,8 @@
-import { Button } from "../components/ui/button"
-import { Input } from "../components/ui/input"
+import EditorJS from '@editorjs/editorjs';
+import DragDrop from 'editorjs-drag-drop';
+import { useEffect, useRef, useState } from "react";
+import LoadingSpinner from "../components/loader";
+import { Button } from "../components/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -13,21 +16,29 @@ import {
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
-  } from "../components/ui/dropdown-menu"
-  import EditorJS from '@editorjs/editorjs';
-import { useEffect, useRef, useState } from "react";
-import ImageTool from '@editorjs/image';
-import Header from "@editorjs/header"
-import Paragraph from "@editorjs/paragraph"
-import LoadingSpinner from "../components/loader";
-import DragDrop from 'editorjs-drag-drop';
-import EditorjsList from '@editorjs/list';
-import Quote from '@editorjs/quote';
-import Table from '@editorjs/table'
+} from "../components/ui/dropdown-menu";
+import { Input } from "../components/ui/input";
+import { EDITOR_CONFIG_TOoL } from "../constants/editor-js-tools";
+import Undo from 'editorjs-undo';
+import { ScrollArea } from '../components/ui/scroll-area';
+
+import {
+    CustomSheet,
+    CustomSheetClose,
+    CustomSheetContent,
+    CustomSheetDescription,
+    CustomSheetFooter,
+    CustomSheetHeader,
+    CustomSheetTitle,
+    CustomSheetTrigger,
+  } from "../components/ui/full-screensheet"
 
 const UpdateArticlePage = () => {
     const [editorLoading, setEditorLoading] = useState(false)
     const editorInstance = useRef(null);
+    const [editorData, setEditorData] = useState(null); // State to store editor content
+    const [showPreview, setShowPreview] = useState(false); // State to toggle preview
+    const previewSheet = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         if (!editorInstance.current) {
@@ -37,49 +48,17 @@ const UpdateArticlePage = () => {
               console.log('Editor.js is ready to work!');
               // Initialize the drag-and-drop plugin
               new DragDrop(editor);
+              new Undo({ editor });
             },
             autofocus: true,
-            inlineToolbar: ['link', 'marker', 'bold', 'italic'],
+            inlineToolbar: ['link', 'marker', 'bold', 'italic', 'image'],
             //@ts-ignore
             logLevel: "ERROR",
-            tools: {
-                paragraph: {
-                    class: Paragraph,
-                    inlineToolbar: true,
-                    //@ts-ignore
-                    placeholder: "Start typing"
-                },
-                header: {
-                    class: Header,
-                    config: {
-                    placeholder: 'Enter a header',
-                    levels: [1, 2, 3, 4, 5, 6],
-                    defaultLevel: 1,
-                    },
-                },
-                table: {
-                    //@ts-ignore
-                    class: Table,
-                    inlineToolbar: true,
-                    config: {
-                      rows: 2,
-                      cols: 3,
-                      maxRows: 5,
-                      maxCols: 5,
-                    },
-                },
-                quote: {
-                    class: Quote,
-                    inlineToolbar: true,
-                    shortcut: 'CMD+SHIFT+O',
-                    config: {
-                      quotePlaceholder: 'Enter a quote',
-                      captionPlaceholder: 'Quote\'s author',
-                    },
-                }, 
-                defaultBlock: Paragraph
-            },
-          });
+            //@ts-ignore
+            tools: EDITOR_CONFIG_TOoL,
+            tunes: ['textVariant', 'indentTune'],
+
+        });
     
           console.log('Editor instance created:', editor); // Debugging log
           editorInstance.current = editor;
@@ -92,7 +71,22 @@ const UpdateArticlePage = () => {
             editorInstance.current = null;
           }
         };
-      }, []);
+    }, []);
+
+    const saveData = async () => {
+        if (editorInstance.current) {
+          const savedData = await editorInstance.current.save();
+          console.log('Saved data:', savedData);
+        }
+    };
+
+    const handlePreview = async () => {
+        if (editorInstance.current) {
+          const savedData = await editorInstance.current.save();
+          setEditorData(savedData); // Save editor content to state
+          setShowPreview(true); // Show the preview
+        }
+    };
 
 
     return (
@@ -185,7 +179,14 @@ const UpdateArticlePage = () => {
                 </div>
 
                 <div className="mt-16">
-                    <h1 className="text-lg font-medium ipad:text-xl md:text-2xl">Editor</h1>
+                    <div className='flex items-center justify-between'>
+                        <h1 className="text-lg font-medium ipad:text-xl md:text-2xl">Editor</h1>
+                        
+                        <div className=''>
+                            <Button onClick={() => {previewSheet.current.click()}} className='text-white'>Preview</Button>
+                        </div>
+                    </div>
+
 
                     <div className="mt-5 border border-gray-400 rounded-lg w-full py-20 bg-white min-h-80">
                         { editorLoading ?
@@ -193,11 +194,25 @@ const UpdateArticlePage = () => {
                                 <LoadingSpinner className={{scale : "70%"}} loading={true}/>
                             </div> : 
                             
-                            <div id="editorjs" className="w-full text-lg"></div>
+                            <div id="editorjs" className="w-full text-lg px-6 md:px-0 font-raleway"></div>
                         }
                     </div>
                 </div>
-
+                
+                <div className=''>
+                    <CustomSheet>
+                        <CustomSheetTrigger asChild>
+                            <div ref={previewSheet} className='hidden'>Open</div>
+                        </CustomSheetTrigger>
+                        
+                        <CustomSheetContent className='bg-white' side='bottom'>
+                            <CustomSheetHeader>
+                            <CustomSheetTitle>Edit profile</CustomSheetTitle>
+                            
+                            </CustomSheetHeader>
+                        </CustomSheetContent>
+                    </CustomSheet>
+                </div>
             </div>
         </>
     )

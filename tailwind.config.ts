@@ -97,10 +97,8 @@ const config = {
   			'accordion-up': 'accordion-up 0.2s ease-out'
   		},
   		fontFamily: {
-  			outfit: [
-  				'Outfit',
-  				'sans-serif'
-  			]
+  			outfit: ['Outfit', 'sans-serif'],
+			raleway: ['Raleway', 'sans-serif']
   		},
   		backgroundImage: {
   		

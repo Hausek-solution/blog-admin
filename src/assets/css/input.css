@@ -169,4 +169,13 @@
   .side-nav {
     height: calc(100vh - 80px);
   }
+
+  /* Editor JS */
+  /* Indent  */
+  .indentHighlight {
+    transition: background-color 0.4s;
+  }
+  [data-block-indent-wrapper][data-focused] .indentHighlight {
+      @apply bg-gray-300
+  }
 }
