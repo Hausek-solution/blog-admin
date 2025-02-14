@@ -13,6 +13,7 @@ import FeaturedArticle from "../pages/article-timebased/featured-article";
 import RecentlyUpdated from "../pages/article-timebased/recently-updated";
 import RecentlyPublished from "../pages/article-timebased/recently-published";
 import AllArticlesPage from "../pages/all-articles";
+import ArticleDetailsPage from "../pages/aricle-detail-page";
 
 export const CustomRoutes = () => {
   return [
@@ -24,8 +25,8 @@ export const CustomRoutes = () => {
       <Route element={<CreateArticlePage/>} path={ApplicationRoutes.CREATE_ARTICLE}></Route>
       <Route element={<UpdateArticlePage/>} path={ApplicationRoutes.UPDATE_ARTICLE}></Route>
 
-      <Route element={<Blog/>} path={ApplicationRoutes.BLOG_ARTICLES}></Route>
-      <Route element={<ResearchInsight/>} path={ApplicationRoutes.RESEARCH_INSIGHT}></Route>
+      {/* <Route element={<Blog/>} path={ApplicationRoutes.BLOG_ARTICLES}></Route> */}
+      {/* <Route element={<ResearchInsight/>} path={ApplicationRoutes.RESEARCH_INSIGHT}></Route> */}
 
       <Route element={<DraftPage/>} path={ApplicationRoutes.DRAFT_ARTICLES}></Route>
       <Route element={<ScheduledPage/>} path={ApplicationRoutes.SCHEDULED_ARTICLE}></Route>
@@ -34,6 +35,7 @@ export const CustomRoutes = () => {
       <Route element={<FeaturedArticle/>} path={ApplicationRoutes.FEATURED_ARTICLES}></Route>
       <Route element={<RecentlyUpdated/>} path={ApplicationRoutes.RECENTLY_UPDATED}></Route>
       <Route element={<RecentlyPublished/>} path={ApplicationRoutes.RECENTLY_PUSBLISHED}></Route>
+      <Route element={<ArticleDetailsPage/>} path={ApplicationRoutes.ARTICLE_DETAILS}></Route>
     </Route>,
   ];
 };

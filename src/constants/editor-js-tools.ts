@@ -31,7 +31,7 @@ export const EDITOR_CONFIG_TOoL = {
     paragraph: {
         class: Paragraph,
         inlineToolbar: true,
-        tunes: ['alignmentTune', 'indentTune',],
+        // tunes: ['alignmentTune', 'indentTune',],
         //@ts-ignore
         placeholder: "Start typing"
     },
@@ -128,39 +128,3 @@ export const EDITOR_CONFIG_TOoL = {
         }
     },
 }
-
-export const EDITOR_BLOCK = [
-    {
-      type: "layout",
-      data: {
-        itemContent: {
-          1: {
-            blocks: [
-              {
-                type: "paragraph",
-                data: {
-                  text: "item content 1",
-                },
-              },
-            ],
-          },
-        },
-        layout: {
-          type: "container",
-          id: "demo-data-container",
-          className: "demo-data-container",
-          style: "border: 1px solid #000000; padding: 16px; ",
-          children: [
-            {
-              type: "item",
-              id: "demo-data-item-1",
-              className: "demo-data-item-1",
-              style:
-                "border: 1px solid #000000; display: inline-block; padding: 8px; ",
-              itemContentId: "1",
-            },
-          ],
-        },
-      },
-    },
-  ]

@@ -178,4 +178,42 @@
   [data-block-indent-wrapper][data-focused] .indentHighlight {
       @apply bg-gray-300
   }
+  
+}
+
+/* Header styles */
+.ce-header--h1 {
+  font-size: 2.5em; /* Large size for h1 */
+  font-weight: bold;
+  margin: 1.5em 0 0.5em;
+}
+
+.ce-header--h2 {
+  font-size: 2em; /* Slightly smaller for h2 */
+  font-weight: bold;
+  margin: 1.25em 0 0.5em;
+}
+
+.ce-header--h3 {
+  font-size: 1.75em; /* Smaller for h3 */
+  font-weight: bold;
+  margin: 1em 0 0.5em;
+}
+
+.ce-header--h4 {
+  font-size: 1.5em; /* Even smaller for h4 */
+  font-weight: bold;
+  margin: 0.75em 0 0.5em;
+}
+
+.ce-header--h5 {
+  font-size: 1.25em; /* Small for h5 */
+  font-weight: bold;
+  margin: 0.5em 0 0.5em;
+}
+
+.ce-header--h6 {
+  font-size: 1em; /* Smallest for h6 */
+  font-weight: bold;
+  margin: 0.25em 0 0.5em;
 }

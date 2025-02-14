@@ -1,6 +1,6 @@
 import EditorJS from '@editorjs/editorjs';
 import DragDrop from 'editorjs-drag-drop';
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import LoadingSpinner from "../components/loader";
 import { Button } from "../components/ui/button";
 import {
@@ -32,12 +32,12 @@ import {
     CustomSheetTitle,
     CustomSheetTrigger,
   } from "../components/ui/full-screensheet"
+import React from 'react';
 
 const UpdateArticlePage = () => {
     const [editorLoading, setEditorLoading] = useState(false)
     const editorInstance = useRef(null);
     const [editorData, setEditorData] = useState(null); // State to store editor content
-    const [showPreview, setShowPreview] = useState(false); // State to toggle preview
     const previewSheet = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
@@ -51,7 +51,7 @@ const UpdateArticlePage = () => {
               new Undo({ editor });
             },
             autofocus: true,
-            inlineToolbar: ['link', 'marker', 'bold', 'italic', 'image'],
+            inlineToolbar: ['bold', 'italic', 'marker', 'link'],
             //@ts-ignore
             logLevel: "ERROR",
             //@ts-ignore
@@ -84,9 +84,143 @@ const UpdateArticlePage = () => {
         if (editorInstance.current) {
           const savedData = await editorInstance.current.save();
           setEditorData(savedData); // Save editor content to state
-          setShowPreview(true); // Show the preview
+          console.log(editorData)
+        //   setShowPreview(true); // Show the preview
         }
     };
+
+    const renderPreview = useCallback(() => {
+        return (
+            <>
+                <div className="editorjs-preview">
+                    {editorData.blocks.map((block, index) => {
+                    switch (block.type) {
+                    case "paragraph":
+                        return (
+                        <p key={index} className="ce-paragraph">
+                            {block.data.text}
+                        </p>
+                        );
+                        case "header":
+                            const { text, color, alignText, titleType } = block.data;
+                            const headerLevel = titleType ? titleType.toLowerCase() : "h2"; // Default to h2 if titleType is missing
+                            const headerStyle = {
+                                color: color || "inherit", // Apply custom color
+                                textAlign: alignText ? alignText.replace("text-align-", "") : "left", // Apply text alignment
+                            };
+                
+                            return React.createElement(
+                                headerLevel,
+                                {
+                                key: index,
+                                className: `ce-header ce-header--${headerLevel}`,
+                                style: headerStyle,
+                                },
+                                text
+                            );
+                
+                    case "quote":
+                        return (
+                        <blockquote key={index} className="ce-quote">
+                            <p className="ce-quote__text">{block.data.text}</p>
+                            {block.data.caption && (
+                            <footer className="ce-quote__caption">{block.data.caption}</footer>
+                            )}
+                        </blockquote>
+                        );
+                    case "list":
+                        return (
+                        <ul key={index} className="cdx-block cdx-list">
+                            {block.data.items.map((item, i) => (
+                            <li key={i} className="cdx-list__item">
+                                {item}
+                            </li>
+                            ))}
+                        </ul>
+                        );
+                    case "table":
+                        return (
+                        <table key={index} className="ce-table">
+                            <tbody>
+                            {block.data.content.map((row, i) => (
+                                <tr key={i}>
+                                {row.map((cell, j) => (
+                                    <td key={j} className="ce-table__cell">
+                                    {cell}
+                                    </td>
+                                ))}
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                        );
+                    case "image":
+                        return (
+                        <div key={index} className="ce-image">
+                            <img
+                            src={block.data.file.url}
+                            alt={block.data.caption}
+                            className="ce-image__img"
+                            />
+                            {block.data.caption && (
+                            <p className="ce-image__caption">{block.data.caption}</p>
+                            )}
+                        </div>
+                        );
+                    case "code":
+                        return (
+                        <pre key={index} className="ce-code">
+                            <code>{block.data.code}</code>
+                        </pre>
+                        );
+                    case "warning":
+                        return (
+                        <div key={index} className="ce-warning">
+                            <strong className="ce-warning__title">{block.data.title}</strong>
+                            <p className="ce-warning__message">{block.data.message}</p>
+                        </div>
+                        );
+                    case "delimiter":
+                        return <hr key={index} className="ce-delimiter" />;
+                    case "checklist":
+                        return (
+                        <ul key={index} className="cdx-block cdx-checklist">
+                            {block.data.items.map((item, i) => (
+                            <li key={i} className="cdx-checklist__item">
+                                <input
+                                type="checkbox"
+                                checked={item.checked}
+                                disabled
+                                className="cdx-checklist__item-checkbox"
+                                />
+                                <span className="cdx-checklist__item-text">{item.text}</span>
+                            </li>
+                            ))}
+                        </ul>
+                        );
+                    case "embed":
+                        return (
+                        <div
+                            key={index}
+                            className="ce-embed"
+                            dangerouslySetInnerHTML={{ __html: block.data.embed }}
+                        />
+                        );
+                    case "raw":
+                        return (
+                        <div
+                            key={index}
+                            className="ce-raw"
+                            dangerouslySetInnerHTML={{ __html: block.data.html }}
+                        />
+                        );
+                    default:
+                        return <p key={index}>Unsupported block type: {block.type}</p>;
+                    }})}
+                </div>
+            </>
+        )
+    }, [editorData]) 
 
 
     return (
@@ -183,7 +317,7 @@ const UpdateArticlePage = () => {
                         <h1 className="text-lg font-medium ipad:text-xl md:text-2xl">Editor</h1>
                         
                         <div className=''>
-                            <Button onClick={() => {previewSheet.current.click()}} className='text-white'>Preview</Button>
+                            <Button onClick={() => {handlePreview(); previewSheet.current.click()}} className='text-white'>Preview</Button>
                         </div>
                     </div>
 
@@ -205,9 +339,19 @@ const UpdateArticlePage = () => {
                             <div ref={previewSheet} className='hidden'>Open</div>
                         </CustomSheetTrigger>
                         
-                        <CustomSheetContent className='bg-white' side='bottom'>
+                        <CustomSheetContent className='bg-white blog-container font-raleway' side='bottom'>
                             <CustomSheetHeader>
-                            <CustomSheetTitle>Edit profile</CustomSheetTitle>
+                            <CustomSheetTitle>Preview Article</CustomSheetTitle>
+
+                            <div className='min-h-60 font-raleway'>
+                                { !editorData ?
+                                    <div className='min-h-60 w-full flex items-center justify-center'>
+                                        <p className=''>No content to preview</p>
+                                    </div> :
+                                    
+                                    renderPreview()
+                                }
+                            </div>
                             
                             </CustomSheetHeader>
                         </CustomSheetContent>

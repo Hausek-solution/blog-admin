@@ -29,19 +29,19 @@ const items = [
       url: ApplicationRoutes.ALL_ARTICLES,
       children: []
     },
-    {
-      title: "By Category",
-      children: [
-        {
-            title: "Blog",
-            url: ApplicationRoutes.BLOG_ARTICLES,
-        },
-        {
-            title: "Research Insight",
-            url: ApplicationRoutes.RESEARCH_INSIGHT,
-        }
-      ]
-    },
+    // {
+    //   title: "By Category",
+    //   children: [
+    //     {
+    //         title: "Blog",
+    //         url: ApplicationRoutes.BLOG_ARTICLES,
+    //     },
+    //     {
+    //         title: "Research Insight",
+    //         url: ApplicationRoutes.RESEARCH_INSIGHT,
+    //     }
+    //   ]
+    // },
     {
       title: "By Status",
       children: [
@@ -79,8 +79,8 @@ const items = [
 ]
 
 const categoryRoute = [
-    ApplicationRoutes.BLOG_ARTICLES,
-    ApplicationRoutes.RESEARCH_INSIGHT
+    // ApplicationRoutes.BLOG_ARTICLES,
+    // ApplicationRoutes.RESEARCH_INSIGHT
 ]
 
 const timeBasedRoute = [

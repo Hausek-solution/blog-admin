@@ -9,15 +9,16 @@ const privateRoutes: string[] = [
   ApplicationRoutes.CREATE_ARTICLE,
   ApplicationRoutes.PRE_UPDATE,
   ApplicationRoutes.UPDATE_ARTICLE,
-  ApplicationRoutes.BLOG_ARTICLES,
-  ApplicationRoutes.RESEARCH_INSIGHT,
+  // ApplicationRoutes.BLOG_ARTICLES,
+  // ApplicationRoutes.RESEARCH_INSIGHT,
   ApplicationRoutes.DRAFT_ARTICLES,
   ApplicationRoutes.SCHEDULED_ARTICLE,
   ApplicationRoutes.PUBLISHED_ARTICLE,
   ApplicationRoutes.FEATURED_ARTICLES,
   ApplicationRoutes.RECENTLY_PUSBLISHED,
   ApplicationRoutes.RECENTLY_UPDATED,
-  ApplicationRoutes.ALL_ARTICLES
+  ApplicationRoutes.ALL_ARTICLES,
+  ApplicationRoutes.ARTICLE_DETAILS
 ]
 
 const MiddlewareProvider = ({children}: {children: ReactNode}) => {

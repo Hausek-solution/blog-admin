@@ -8,8 +8,8 @@ export const ApplicationRoutes = {
 
     ALL_ARTICLES: "/articles",
 
-    BLOG_ARTICLES: "/blog",
-    RESEARCH_INSIGHT: "/research-insight",
+    // BLOG_ARTICLES: "/blog",
+    // RESEARCH_INSIGHT: "/research-insight",
 
     DRAFT_ARTICLES: "/articles/draft",
     SCHEDULED_ARTICLE: "/article/scheduled",
@@ -18,4 +18,6 @@ export const ApplicationRoutes = {
     FEATURED_ARTICLES: "/articles/featured",
     RECENTLY_UPDATED: "/articles/recently-updated",
     RECENTLY_PUSBLISHED: "/articles/recently-published",
+
+    ARTICLE_DETAILS: "/article/:slug"
 }
