@@ -24,6 +24,7 @@ import Title from "title-editorjs";
 import ToggleBlock from 'editorjs-toggle-block';
 import AIText from '@alkhipce/editorjs-aitext'
 import { ToolConstructable } from '@editorjs/editorjs';
+import SpacerTool from '../components/editor/spacer-tool';
 
 
 export const EDITOR_CONFIG_TOoL = {
@@ -74,6 +75,10 @@ export const EDITOR_CONFIG_TOoL = {
           captionPlaceholder: 'Quote\'s author',
         },
     }, 
+    linespacer: {
+        class: SpacerTool,
+        inlineToolbar: true,
+    },
     embed: Embed,
     list: List,
     warning: Warning,

@@ -65,6 +65,10 @@ const CreateArticlePage = () => {
     const previewSheet = useRef<HTMLDivElement>(null)
     const [changeSchedule, setChangeSchedule] = useState(false)
     const [date, setDate] = useState<Date | undefined>(new Date())
+
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [previewURL, setPreviewURL] = useState('');
+
     const [open, setOpen] = useState(false)
 
     // loading state
@@ -133,10 +137,27 @@ const CreateArticlePage = () => {
         if (editorInstance.current) {
           const savedData = await editorInstance.current.save();
           setEditorData(savedData); // Save editor content to state
-          console.log(editorData)
+          console.log(savedData)
         //   setShowPreview(true); // Show the preview
         }
     };
+    
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+
+        if (file) {
+            setSelectedFile(file);
+            const fileReader = new FileReader();
+
+            fileReader.onload = () => {
+                setPreviewURL(fileReader.result as string);
+            };
+            fileReader.readAsDataURL(file);
+        }else {
+            setSelectedFile(null);
+            setPreviewURL('');
+        }
+    }
 
     const renderPreview = useCallback(() => {
         return (
@@ -349,7 +370,7 @@ const CreateArticlePage = () => {
                         <div className="max-w-sm">
                             <p className="">Featured image</p>
 
-                            <Input id="picture" type="file"  className="max-w-sm border border-gray-400 mt-2"/>
+                            <Input id="picture" onChange={handleFileChange} type="file"  className="max-w-sm border border-gray-400 mt-2"/>
                         </div>
 
                         <div className="max-w-sm mt-14">
@@ -360,10 +381,13 @@ const CreateArticlePage = () => {
                     </div>
 
                     <div className="border border-gray-400 rounded-md w-full max-w-2xl">
-                        <img
-                            src="/images/dummy/blog2.jpg"
-                            className="max-h-72 object-center object-fill"
-                        />
+                        { previewURL && 
+                            <img
+                                src={previewURL}
+                                className="max-h-72 object-center object-fill"
+                                alt='Featured image'
+                            />
+                        }
                     </div>
                 </div>
 
