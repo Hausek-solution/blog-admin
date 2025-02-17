@@ -1,5 +1,5 @@
 import { LucideCalendarSearch, LucideGrid, LucideLayoutGrid, LucideList } from "lucide-react"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { ArticleResponseType, RecentArticles } from "../../types/article-type"
 import ArticleCard from "../../components/articles/article-card"
 import { cn } from "../../lib/utils"
@@ -30,65 +30,12 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { format } from "date-fns"
-
-const dummyArticles : ArticleResponseType[] = [
-    {
-        categories: "blog",
-        featured_image: '/images/dummy/blog.jpg',
-        id: 1,
-        is_featured: false,
-        published_at: null,
-        slug: 'sks-ssjdjd-sjdjd',
-        title: 'Test of Title of article',
-        content: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Provident suscipit nostrum dolorum eius expedita accusantium ducimus ad incidunt quam illo ut eaque natus mollitia voluptas temporibus beatae at, totam neque?",
-        created_at: "2025-02-03",
-        status: "published",
-        tags: [{name: "Housing"}, {name: "Agency"}],
-        updated_at: null
-    },
-    {
-        categories: "blog",
-        featured_image: '/images/dummy/blog.jpg',
-        id: 2,
-        is_featured: false,
-        published_at: null,
-        slug: 'sks-ssjdjd-sjdjd',
-        title: 'Test of Title of article',
-        content: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Provident suscipit nostrum dolorum eius expedita accusantium ducimus ad incidunt quam illo ut eaque natus mollitia voluptas temporibus beatae at, totam neque?",
-        created_at: "2025-02-03",
-        status: "published",
-        tags: [{name: "Housing"}, {name: "Agency"}],
-        updated_at: null
-    },
-    {
-        categories: "blog",
-        featured_image: '/images/dummy/blog2.jpg',
-        id: 3,
-        is_featured: false,
-        published_at: null,
-        slug: 'sks-ssjdjd-sjdjd',
-        title: 'Test of Title of article',
-        content: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Provident suscipit nostrum dolorum eius expedita accusantium ducimus ad incidunt quam illo ut eaque natus mollitia voluptas temporibus beatae at, totam neque?",
-        created_at: "2025-02-03",
-        status: "published",
-        tags: [{name: "Housing"}, {name: "Agency"}],
-        updated_at: null
-    },
-    {
-        categories: "research",
-        featured_image: '/images/dummy/dummy2.jpg',
-        id: 4,
-        is_featured: false,
-        published_at: null,
-        slug: 'sks-ssjdjd-sjdjd',
-        title: 'Test of Title of article',
-        content: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Provident suscipit nostrum dolorum eius expedita accusantium ducimus ad incidunt quam illo ut eaque natus mollitia voluptas temporibus beatae at, totam neque?",
-        created_at: "2025-02-03",
-        status: "published",
-        tags: [{name: "Housing"}, {name: "Agency"}],
-        updated_at: null
-    },
-]
+import { getRecentArticles } from "../../request/article-request"
+import { AxiosResponse } from "axios"
+import { ApplicationRoutes } from "../../routes/routes-constant"
+import { Link } from "react-router-dom"
+import RecentArticleCard from "../../components/articles/recent-article-card"
+import { Input } from "../../components/ui/input"
 
 const RecentlyPublished = () => {
     const [activelayout, setAciveLayout] = useState<"list" | "grid">("list")
@@ -102,6 +49,9 @@ const RecentlyPublished = () => {
     const [date, setDate] = useState<Date | undefined>(new Date())
     const [open, setOpen] = useState(false)
 
+    const [allArticlesLoading, setAllArticleLoading] = useState(false)
+    const [allArticles, setAllArticles] = useState<RecentArticles[]>([])
+
 
     const renderArticles = useCallback(() => {
         return (
@@ -111,8 +61,8 @@ const RecentlyPublished = () => {
                         { "grid grid-cols-1 ipad:grid-cols-2 gap-8": activelayout === "list"},
                         { "grid grid-cols-1 sm:grid-cols-2 mini:grid-cols-3": activelayout === "grid"},
                     )}>
-                        { dummyArticles.map((art, index) => (
-                            <ArticleCard
+                        { allArticles.map((art, index) => (
+                            <RecentArticleCard
                                 data={art}
                                 displayLayout={activelayout}
                                 key={art.id}
@@ -123,7 +73,7 @@ const RecentlyPublished = () => {
                 </div>
             </>
         )
-    }, [activelayout, page])
+    }, [activelayout, allArticles])
 
     const handlePageChange = (page: number) => {
         setPage(page);
@@ -144,23 +94,57 @@ const RecentlyPublished = () => {
 
     }
 
-    
+    const fetchArticles = async () => {
+        setAllArticleLoading(true)
+        const response = await getRecentArticles(6)
+
+        const axioResponse = response as AxiosResponse<RecentArticles[], any>
+        if (axioResponse.status === 200) {
+            setAllArticles(axioResponse.data)
+        }
+
+        setAllArticleLoading(false)
+    }
+
+    useEffect(() => {
+        fetchArticles().then()
+        setAciveLayout("list")
+    }, [])
 
     return (
         <>
             <div className="app-container w-full pb-16">
                 <div className="w-full flex justify-between text-gray-500 border-b border-gray-500 items-center">
-                    <h1 className="mt-10 text-2xl ">Recently Published<span className="font-medium">(23)</span></h1>
+                    <h1 className="mt-10 text-2xl ">Recently Published<span className="font-medium">({allArticles.length})</span></h1>
 
                     <div className="flex items-center space-x-3">
                         <LucideList onClick={() => {setAciveLayout("list")}} className="cursor-pointer"/>
                         <LucideLayoutGrid onClick={() => {setAciveLayout("grid")}} className="cursor-pointer"/>
                     </div>
-                </div>
+                </div>                
 
-                <div className="mt-16 ">
-                    {renderArticles()}
-                </div>
+                { allArticlesLoading  ? 
+                    <div className="w-full flex py-20 md:py-28 justify-center">
+                        <div className="">
+                            <LoadingSpinner className={{scale : "70%"}} loading={true}/>
+                        </div> 
+                    </div> :
+                    
+                    <div className="mt-16 ">
+                        { allArticles.length > 0 ?
+                            <>
+                                {renderArticles()}
+                            </> : 
+
+                            <div className="py-24 w-full flex flex-col font-raleway items-center justify-center">
+                                <p className="font-normal mb-4">There are currently no articles published in the past 2 days</p>
+                                <Link to={ApplicationRoutes.CREATE_ARTICLE} className="">
+                                    <Button className="py-6 px-6 text-white">Create an article</Button>
+                                </Link>
+                            </div>
+                        }
+                    </div>
+                }
             </div>
 
             <Dialog>

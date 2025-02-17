@@ -1,3 +1,5 @@
+import { number } from "zod"
+
 export type ArticleResponseType = {
     "title": string,
     "content": string,
@@ -14,6 +16,11 @@ export type ArticleResponseType = {
     
 }
 
+export type AllArticles = {
+    total: number,
+    articles: ArticleResponseType[]
+}
+
 type Tags = {
     "name": string
 }
@@ -28,5 +35,15 @@ export type RecentArticles = {
     "featured_image": string,
     "updated_at": string | null,
     "categories": "research" | "blog",
-    "is_featured": boolean
+    "is_featured": boolean,
+    "status": "draft" | "published" | "scheduled",
+
+}
+export type ArticleMetrics = {
+    "article_count": number,
+    "published": number,
+    "draft": number,
+    "scheduled": number,
+    "blog_count": number,
+    "research_count": number
 }

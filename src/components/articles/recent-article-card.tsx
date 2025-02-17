@@ -3,18 +3,16 @@ import { ArticleResponseType, RecentArticles } from "../../types/article-type"
 import { Button } from "../../components/ui/button"
 import { Link } from "react-router-dom"
 import { ApplicationRoutes } from "../../routes/routes-constant"
-import { Dispatch, SetStateAction } from "react"
 import { format } from "date-fns"
 
 
-type ArticleCardProps = {
-    data: ArticleResponseType,
+type RecentArticleCardProps = {
+    data: RecentArticles,
     displayLayout: "list" | "grid",
-    scheduledBtn: React.MutableRefObject<HTMLDivElement>,
-    setSelectedArticle?: Dispatch<SetStateAction<ArticleResponseType>>
+    scheduledBtn: React.MutableRefObject<HTMLDivElement>
 }
 
-const ArticleCard = ({ data, displayLayout, scheduledBtn, setSelectedArticle}: ArticleCardProps) => {
+const RecentArticleCard = ({ data, displayLayout, scheduledBtn}: RecentArticleCardProps) => {
 
     return (
         <>
@@ -35,33 +33,32 @@ const ArticleCard = ({ data, displayLayout, scheduledBtn, setSelectedArticle}: A
                     />
                 </div>
 
-                <div className="p-2 px-4 relative">
-                    <div className="flex justify-between items-center">
+                <div className="p-2 px-4 relative w-full">
+                    <div className="flex gap-3 justify-between items-center">
                         <p className="font-semibold text-primary text-lg pt-2">{data.title}</p>
                         <div className={cn("px-4 capitalize py-1 rounded-full",
-                            {"bg-gray-300": data.status === "draft"},
-                            {"bg-blue-500 text-white": data.status === "scheduled"},
-                            {"bg-green-500 text-white": data.status === "published"},
+                            {"bg-blue-500 text-white": data.categories === "blog"},
+                            {"bg-green-500 text-white": data.categories === "research"},
                         )}>
-                            {data.status}
+                            {data.categories}
                         </div>
                     </div>
 
-                    <p className={cn("py-2", {"hidden": displayLayout === "grid"})}>{data.content.slice(0, data.content.lastIndexOf(" ", 140))}...</p>
+                    {/* <p className={cn("py-2", {"hidden": displayLayout === "grid"})}>{data..slice(0, data.content.lastIndexOf(" ", 140))}...</p> */}
 
-                    <div className={cn("flex-col gap-y-8 justify-between ipad:flex-row items-center pt-3 border-t py-2", {"border-none": displayLayout === "grid"})}>
+                    <div className={cn("flex justify-between items-center pt-3 border-t py-2 mt-4", {"border-none mt-0": displayLayout === "grid"})}>
                         <div className="flex flex-col gap-y-2">
                             <div className="flex items-center space-x-2 text-sm">
                                 { data.status === "scheduled" ?
-                                        <p className="">To Publish on</p> :
+                                        <p className="">To Publish On</p> :
                                         <p className="">Published</p>
                                 }
                                 <p className="text-sm text-gray-500">{data.published_at ? format(data.published_at, "do MMMM yyyy 'by' h:mma"): ""}</p>
                             </div>
-                            <div className="flex items-center space-x-2 text-sm">
-                                <p className="">Created on</p>
-                                <p className="text-sm text-gray-500">{data.created_at ? format(data.created_at, "do MMMM yyyy 'at' h:mma"): ""}</p>
-                            </div>
+                            {/* <div className="flex items-center space-x-2 text-sm">
+                                <p className="">Created at</p>
+                                <p className="text-sm text-gray-500">{data.}</p>
+                            </div> */}
 
                             <div className="flex items-center space-x-2 text-sm">
                                 <p className="">Last updated</p>
@@ -69,19 +66,21 @@ const ArticleCard = ({ data, displayLayout, scheduledBtn, setSelectedArticle}: A
                             </div>
 
                         </div>
-
-                        <div className="flex items-center space-x-2">
-                            { data.status === "draft" &&
-                                <Link to={`${ApplicationRoutes.PRE_UPDATE}/${data.slug}`} className="text-base text-secondary font-medium">Continue editing</Link>
-                            }
-                            { data.status === "published" &&
-                                <p className="text-base text-secondary font-medium">View</p>
-                            }
-                            { data.status === "scheduled" &&
-                                <p onClick={() => {setSelectedArticle(data);scheduledBtn.current.click()}} className="text-base text-secondary font-medium">See schedule</p>
-                            }
-                        </div>
                     </div>
+{/* 
+                    <div className="flex items-center space-x-2">
+                        { data.status === "draft" &&
+                            <Link to={`${ApplicationRoutes.PRE_UPDATE}/${data.slug}`} className="text-base text-secondary font-medium">Continue editing</Link>
+                        }
+                        { data.status === "published" &&
+                            <p className="text-base text-secondary font-medium">View</p>
+                        }
+                        { data.status === "scheduled" &&
+                            <p onClick={() => {scheduledBtn.current.click()}} className="text-base text-secondary font-medium">See schedule</p>
+                        }
+                    </div> */}
+
+                    <div className="capitalize text-gray-400">{data.status}</div>
                 </div>
             </div>
 
@@ -89,4 +88,4 @@ const ArticleCard = ({ data, displayLayout, scheduledBtn, setSelectedArticle}: A
     )
 }
 
-export default ArticleCard
+export default RecentArticleCard

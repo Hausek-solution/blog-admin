@@ -1,5 +1,5 @@
 import { LucideCalendarSearch, LucideGrid, LucideLayoutGrid, LucideList } from "lucide-react"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { ArticleResponseType, RecentArticles } from "../../types/article-type"
 import ArticleCard from "../../components/articles/article-card"
 import { cn } from "../../lib/utils"
@@ -30,6 +30,11 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { format } from "date-fns"
+import { getRecentUpdated } from "../../request/article-request"
+import { AxiosResponse } from "axios"
+import { ApplicationRoutes } from "../../routes/routes-constant"
+import { Link } from "react-router-dom"
+import RecentArticleCard from "../../components/articles/recent-article-card"
 
 const dummyArticles : ArticleResponseType[] = [
     {
@@ -102,6 +107,8 @@ const RecentlyUpdated = () => {
     const [date, setDate] = useState<Date | undefined>(new Date())
     const [open, setOpen] = useState(false)
 
+    const [allArticlesLoading, setAllArticleLoading] = useState(false)
+    const [allArticles, setAllArticles] = useState<RecentArticles[]>([])
 
     const renderArticles = useCallback(() => {
         return (
@@ -111,8 +118,8 @@ const RecentlyUpdated = () => {
                         { "grid grid-cols-1 ipad:grid-cols-2 gap-8": activelayout === "list"},
                         { "grid grid-cols-1 sm:grid-cols-2 mini:grid-cols-3": activelayout === "grid"},
                     )}>
-                        { dummyArticles.map((art, index) => (
-                            <ArticleCard
+                        { allArticles.map((art, index) => (
+                            <RecentArticleCard
                                 data={art}
                                 displayLayout={activelayout}
                                 key={art.id}
@@ -123,7 +130,7 @@ const RecentlyUpdated = () => {
                 </div>
             </>
         )
-    }, [activelayout, page])
+    }, [activelayout, allArticles])
 
     const handlePageChange = (page: number) => {
         setPage(page);
@@ -144,13 +151,30 @@ const RecentlyUpdated = () => {
 
     }
 
+    const fetchArticles = async () => {
+        setAllArticleLoading(true)
+        const response = await getRecentUpdated(5)
+
+        const axioResponse = response as AxiosResponse<RecentArticles[], any>
+        if (axioResponse.status === 200) {
+            setAllArticles(axioResponse.data)
+        }
+
+        setAllArticleLoading(false)
+    }
+
+    useEffect(() => {
+        fetchArticles().then()
+        setAciveLayout("list")
+    }, [])
+
     
 
     return (
         <>
             <div className="app-container w-full pb-16">
                 <div className="w-full flex justify-between text-gray-500 border-b border-gray-500 items-center">
-                    <h1 className="mt-10 text-2xl ">Recently Updated <span className="font-medium">(23)</span></h1>
+                    <h1 className="mt-10 text-2xl ">Recently Updated <span className="font-medium">({allArticles.length})</span></h1>
 
                     <div className="flex items-center space-x-3">
                         <LucideList onClick={() => {setAciveLayout("list")}} className="cursor-pointer"/>
@@ -158,9 +182,25 @@ const RecentlyUpdated = () => {
                     </div>
                 </div>
 
-                <div className="mt-16 ">
-                    {renderArticles()}
-                </div>
+                { allArticlesLoading  ? 
+                    <div className="w-full flex py-20 md:py-28 justify-center">
+                        <div className="">
+                            <LoadingSpinner className={{scale : "70%"}} loading={true}/>
+                        </div> 
+                    </div> :
+                    
+                    <div className="mt-16 ">
+                        { allArticles.length > 0 ?
+                            <>
+                                {renderArticles()}
+                            </> : 
+
+                            <div className="py-24 w-full flex flex-col font-raleway items-center justify-center">
+                                <p className="font-normal mb-4">There are no article updated in the past 2 days</p>
+                            </div>
+                        }
+                    </div>
+                }
             </div>
 
             <Dialog>

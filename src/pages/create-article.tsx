@@ -32,7 +32,30 @@ import {
     CustomSheetTitle,
     CustomSheetTrigger,
   } from "../components/ui/full-screensheet"
+  import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+  } from "../components/ui/dialog"
+import { Form, FormControl, FormField, FormItem, FormMessage } from "../components/ui/form"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+  } from "../components/ui/popover"
 import React from 'react';
+import { Calendar } from '../components/ui/calendar';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import CountdownTimer from '../components/articles/time-countdown';
+import { LucideCalendarSearch } from 'lucide-react';
+import { format } from 'date-fns';
+import { cn } from '../lib/utils';
 
 
 const CreateArticlePage = () => {
@@ -40,6 +63,17 @@ const CreateArticlePage = () => {
     const editorInstance = useRef(null);
     const [editorData, setEditorData] = useState(null); // State to store editor content
     const previewSheet = useRef<HTMLDivElement>(null)
+    const [changeSchedule, setChangeSchedule] = useState(false)
+    const [date, setDate] = useState<Date | undefined>(new Date())
+    const [open, setOpen] = useState(false)
+
+    // loading state
+    const [saveDraftLoading, setSaveDraftLoading] = useState(false)
+    const [scheduleDetailsLoading, setScheduleDetailsLoading] = useState(false)
+    const [scheduleDate, setScheduleDate] = useState(false)
+
+    const scheduledDialogBtn = useRef<HTMLDivElement>(null)
+    
 
     useEffect(() => {
         if (!editorInstance.current) {
@@ -73,6 +107,20 @@ const CreateArticlePage = () => {
           }
         };
     }, []);
+
+    const scheduleFormSchema = z.object({
+        date_of_birth: z.date({
+            required_error: "Please enter date of birth"
+        }),
+    });
+
+    const scheduleForm = useForm<z.infer<typeof scheduleFormSchema>>({
+        resolver: zodResolver(scheduleFormSchema),
+    })
+
+    const onSubmit = async (values: z.infer<typeof scheduleFormSchema>) => {
+
+    }
 
     const saveData = async () => {
         if (editorInstance.current) {
@@ -224,13 +272,20 @@ const CreateArticlePage = () => {
     }, [editorData]) 
 
     return (
-                <>
+        <>
             <div className="app-container w-full pb-16">
                 <div className="w-full flex justify-between text-gray-500 border-b border-gray-500 items-center">
                     <h1 className="mt-10 text-2xl ">Create Article</h1>
 
                     <div className="space-x-3 flex items-center">
-                        <Button className="text-white">Save as Draft</Button>
+                        <Button className="text-white">
+                            { saveDraftLoading ? 
+                                <span className="">
+                                    <LoadingSpinner color="#FFFFFF" className={{scale : "50%"}} loading={saveDraftLoading}/>
+                                </span> :
+                                <p className="">Save as Draft</p>
+                            }
+                        </Button>
 
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -248,8 +303,8 @@ const CreateArticlePage = () => {
                                     <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                                 </DropdownMenuItem>
                               
-                                <DropdownMenuItem>
-                                    Schedule publish
+                                <DropdownMenuItem onClick={()=> {scheduledDialogBtn.current.click()}}>
+                                    <p className=''>Schedule publish</p>                                    
                                     <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
@@ -358,6 +413,105 @@ const CreateArticlePage = () => {
                     </CustomSheet>
                 </div>
             </div>
+
+            <Dialog>
+                <DialogTrigger asChild>
+                    <div ref={scheduledDialogBtn} className="hidden">Scheduled details</div>
+                </DialogTrigger>
+
+                <DialogContent className="sm:max-w-[600px]">
+                    <DialogHeader>
+                        <DialogTitle>Schedule details</DialogTitle>
+                    </DialogHeader>
+
+                    <div className="">
+                        { scheduleDetailsLoading ?  
+                            <div className="py-7 flex justify-center">
+                                <LoadingSpinner className={{scale : "70%"}} loading={true}/>
+                            </div> :
+
+                            <div className="">
+                                <Form {...scheduleForm}>
+                                    <form onSubmit={scheduleForm.handleSubmit(onSubmit)} className="space-y-6 mt-9">
+                                        <div className="ipad:px-4">
+                                            <FormField
+                                                control={scheduleForm.control}
+                                                name="date_of_birth"
+                                                render={({ field }) => (
+                                                    <FormItem className="flex flex-col">
+                                                        <Popover open={open} onOpenChange={setOpen}>
+                                                            <PopoverTrigger asChild className="w-full hover:bg-transparent focus:bg-transparent">
+                                                                <FormControl className="border border-gray-300 w-full dark:border-[#1D2739]">
+                                                                    <Button
+                                                                        variant={"outline"}
+                                                                        className={cn(
+                                                                            "w-full py-7 pl-3 text-left font-normal",
+                                                                            !field.value && "text-muted-foreground"
+                                                                        )}
+                                                                    >
+                                                                        {field.value ? (
+                                                                            format(field.value, "PPP")  
+                                                                        ) : (
+                                                                            <span>Select Date</span>
+                                                                        )}
+
+                                                                        <LucideCalendarSearch className="ml-auto h-4 w-4 opacity-50" />
+                                                                    </Button>
+                                                                </FormControl>
+                                                            </PopoverTrigger>
+
+                                                            <PopoverContent className="w-auto p-0" align="start">
+                                                                <Calendar
+                                                                    mode="single"
+                                                                    captionLayout="dropdown-buttons"
+                                                                    selected={date}
+                                                                    onSelect={(e: Date | undefined)=> {                                                                    
+                                                                        field.onChange(e)
+                                                                        setDate(e)
+                                                                        // setOpen(false) 
+                                                                    }}
+                                                                    fromYear={1920}
+                                                                    toYear={2030}
+                                                                    classNames={{
+                                                                        dropdown_year: 'focus:bg-white hover:bg-white active:bg-white',
+                                                                        caption_dropdowns: 'flex space-x-2 focus:bgwhi',
+                                                                    }}
+                                                                    disabled={(date) => 
+                                                                        date < new Date()
+                                                                    }
+                                                                    initialFocus
+                                                                />
+                                                            </PopoverContent>
+                                                        </Popover>
+
+                                                        <FormMessage className="font-normal text-xs dark:text-red-500"/>
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        </div>
+                                        
+                                        <div className="flex items-center justify-center pb-5">
+                                            <Button className="text-white">
+                                                { scheduleDate ? 
+                                                    <span className="">
+                                                        <LoadingSpinner color="#FFFFFF" className={{scale : "50%"}} loading={scheduleDate}/>
+                                                    </span> :
+                                                    <p className="">Set Schedule</p>
+                                                }
+                                            </Button>
+                                        </div>
+                                    </form>
+                                </Form>
+                            </div>
+                        }
+
+                    </div>
+             
+                    {/* <DialogFooter>
+                        <Button className="text-white" type="submit">Change schedule</Button>
+                    </DialogFooter> */}
+                </DialogContent>
+            </Dialog>
         </>
     )
 }

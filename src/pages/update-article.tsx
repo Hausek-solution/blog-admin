@@ -40,6 +40,9 @@ const UpdateArticlePage = () => {
     const [editorData, setEditorData] = useState(null); // State to store editor content
     const previewSheet = useRef<HTMLDivElement>(null)
 
+    // loading state
+    const [saveDraftLoading, setSaveDraftLoading] = useState(false)
+
     useEffect(() => {
         if (!editorInstance.current) {
           const editor = new EditorJS({
@@ -230,7 +233,14 @@ const UpdateArticlePage = () => {
                     <h1 className="mt-10 text-2xl ">Edit Article</h1>
 
                     <div className="space-x-3 flex items-center">
-                        <Button className="text-white">Save as Draft</Button>
+                        <Button className="text-white">
+                            { saveDraftLoading ? 
+                                <span className="">
+                                    <LoadingSpinner color="#FFFFFF" className={{scale : "50%"}} loading={saveDraftLoading}/>
+                                </span> :
+                                <p className="">Save as Draft</p>
+                            }
+                        </Button>
 
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>

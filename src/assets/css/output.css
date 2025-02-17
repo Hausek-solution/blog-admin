@@ -879,6 +879,10 @@ html {
   top: 100%;
 }
 
+.right-6 {
+  right: 1.5rem;
+}
+
 .z-10 {
   z-index: 10;
 }
@@ -952,6 +956,14 @@ html {
 
 .-mt-4 {
   margin-top: -1rem;
+}
+
+.mb-12 {
+  margin-bottom: 3rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
 }
 
 .mb-9 {
@@ -1038,12 +1050,12 @@ html {
   margin-top: auto;
 }
 
-.mb-4 {
-  margin-bottom: 1rem;
+.mt-6 {
+  margin-top: 1.5rem;
 }
 
-.mb-12 {
-  margin-bottom: 3rem;
+.mt-0 {
+  margin-top: 0px;
 }
 
 .block {
@@ -1159,6 +1171,10 @@ html {
   height: 2.25rem;
 }
 
+.h-96 {
+  height: 24rem;
+}
+
 .h-\[1px\] {
   height: 1px;
 }
@@ -1185,10 +1201,6 @@ html {
 
 .h-svh {
   height: 100svh;
-}
-
-.h-96 {
-  height: 24rem;
 }
 
 .max-h-72 {
@@ -1385,16 +1397,16 @@ html {
   max-width: max-content;
 }
 
+.max-w-screen-xl {
+  max-width: 1280px;
+}
+
 .max-w-sm {
   max-width: 24rem;
 }
 
 .max-w-xl {
   max-width: 36rem;
-}
-
-.max-w-screen-xl {
-  max-width: 1280px;
 }
 
 .flex-1 {
@@ -1578,6 +1590,10 @@ html {
   gap: 2rem;
 }
 
+.gap-3 {
+  gap: 0.75rem;
+}
+
 .gap-y-2 {
   row-gap: 0.5rem;
 }
@@ -1592,6 +1608,18 @@ html {
 
 .gap-y-6 {
   row-gap: 1.5rem;
+}
+
+.gap-y-3 {
+  row-gap: 0.75rem;
+}
+
+.gap-y-7 {
+  row-gap: 1.75rem;
+}
+
+.gap-y-8 {
+  row-gap: 2rem;
 }
 
 .space-x-1 > :not([hidden]) ~ :not([hidden]) {
@@ -1804,6 +1832,11 @@ html {
 
 .border-transparent {
   border-color: transparent;
+}
+
+.border-black {
+  --tw-border-opacity: 1;
+  border-color: rgb(0 0 0 / var(--tw-border-opacity, 1));
 }
 
 .border-l-transparent {
@@ -2082,8 +2115,22 @@ html {
   padding-bottom: 2.25rem;
 }
 
+.py-24 {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
 .pb-16 {
   padding-bottom: 4rem;
+}
+
+.pb-20 {
+  padding-bottom: 5rem;
 }
 
 .pb-3 {
@@ -2154,6 +2201,10 @@ html {
   padding-top: 0.25rem;
 }
 
+.pt-14 {
+  padding-top: 3.5rem;
+}
+
 .pt-16 {
   padding-top: 4rem;
 }
@@ -2170,16 +2221,12 @@ html {
   padding-top: 1rem;
 }
 
-.pb-2 {
-  padding-bottom: 0.5rem;
+.pr-10 {
+  padding-right: 2.5rem;
 }
 
-.pb-20 {
-  padding-bottom: 5rem;
-}
-
-.pt-14 {
-  padding-top: 3.5rem;
+.pt-5 {
+  padding-top: 1.25rem;
 }
 
 .text-left {
@@ -2205,6 +2252,11 @@ html {
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
+}
+
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
 }
 
 .text-\[0\.8rem\] {
@@ -2234,11 +2286,6 @@ html {
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
-}
-
-.text-3xl {
-  font-size: 1.875rem;
-  line-height: 2.25rem;
 }
 
 .font-bold {
@@ -2360,6 +2407,11 @@ html {
   color: rgb(107 114 128 / var(--tw-text-opacity, 1));
 }
 
+.text-gray-600 {
+  --tw-text-opacity: 1;
+  color: rgb(75 85 99 / var(--tw-text-opacity, 1));
+}
+
 .text-green-500 {
   --tw-text-opacity: 1;
   color: rgb(34 197 94 / var(--tw-text-opacity, 1));
@@ -2410,11 +2462,6 @@ html {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
-}
-
-.text-gray-600 {
-  --tw-text-opacity: 1;
-  color: rgb(75 85 99 / var(--tw-text-opacity, 1));
 }
 
 .underline {
@@ -3832,14 +3879,18 @@ html {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .ipad\:px-4 {
-    padding-left: 1rem;
-    padding-right: 1rem;
+  .ipad\:flex-row {
+    flex-direction: row;
   }
 
   .ipad\:px-12 {
     padding-left: 3rem;
     padding-right: 3rem;
+  }
+
+  .ipad\:px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
   .ipad\:text-xl {
@@ -3923,6 +3974,11 @@ html {
   .md\:px-0 {
     padding-left: 0px;
     padding-right: 0px;
+  }
+
+  .md\:py-28 {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
   }
 
   .md\:text-2xl {
