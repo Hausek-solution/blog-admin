@@ -162,32 +162,32 @@ const CreateArticlePage = () => {
     const renderPreview = useCallback(() => {
         return (
             <>
-                <div className="editorjs-preview">
+                <div className="editorjs-preview font-raleway">
                     {editorData.blocks.map((block, index) => {
                     switch (block.type) {
                     case "paragraph":
                         return (
-                        <p key={index} className="ce-paragraph">
+                        <p key={index} className="ce-paragraph font-raleway font-normal">
                             {block.data.text}
                         </p>
+                    );
+                    case "header":
+                        const { text, color, alignText, titleType } = block.data;
+                        const headerLevel = titleType ? titleType.toLowerCase() : "h2"; // Default to h2 if titleType is missing
+                        const headerStyle = {
+                            color: color || "inherit", // Apply custom color
+                            textAlign: alignText ? alignText.replace("text-align-", "") : "left", // Apply text alignment
+                        };
+            
+                        return React.createElement(
+                            headerLevel,
+                            {
+                            key: index,
+                            className: `ce-header ce-header--${headerLevel}`,
+                            style: headerStyle,
+                            },
+                            text
                         );
-                        case "header":
-                            const { text, color, alignText, titleType } = block.data;
-                            const headerLevel = titleType ? titleType.toLowerCase() : "h2"; // Default to h2 if titleType is missing
-                            const headerStyle = {
-                                color: color || "inherit", // Apply custom color
-                                textAlign: alignText ? alignText.replace("text-align-", "") : "left", // Apply text alignment
-                            };
-                
-                            return React.createElement(
-                                headerLevel,
-                                {
-                                key: index,
-                                className: `ce-header ce-header--${headerLevel}`,
-                                style: headerStyle,
-                                },
-                                text
-                            );
                 
                     case "quote":
                         return (
@@ -283,6 +283,18 @@ const CreateArticlePage = () => {
                             className="ce-raw"
                             dangerouslySetInnerHTML={{ __html: block.data.html }}
                         />
+                        );
+                    case "linespacer":
+                        return (
+                            <div
+                                key={index}
+                                className="ce-linespacer"
+                                style={{
+                                    height: `${block.data.spaces * 10}px`, // Adjust height based on spaces
+                                    backgroundColor: 'transparent', // Optional: Add a background color for visibility
+                                    margin: '10px 0', // Optional: Add margin for spacing
+                                }}
+                            />
                         );
                     default:
                         return <p key={index}>Unsupported block type: {block.type}</p>;

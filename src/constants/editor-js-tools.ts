@@ -25,6 +25,7 @@ import ToggleBlock from 'editorjs-toggle-block';
 import AIText from '@alkhipce/editorjs-aitext'
 import { ToolConstructable } from '@editorjs/editorjs';
 import SpacerTool from '../components/editor/spacer-tool';
+import CustomImageTool from '../components/editor/image';
 
 
 export const EDITOR_CONFIG_TOoL = {
@@ -85,10 +86,10 @@ export const EDITOR_CONFIG_TOoL = {
     code: Code,
     linkTool: LinkTool,
     image: {
-        class:ImageTool,
+        class:CustomImageTool,
         config: {
             endpoints: {
-              byFile: 'http://localhost:8008/uploadFile', // Your backend file uploader endpoint
+              byFile: 'https://blog-api-yldt.onrender.com/media/upload', // Your backend file uploader endpoint
               byUrl: 'http://localhost:8008/fetchUrl', // Your endpoint that provides uploading by Url
             }
         }
