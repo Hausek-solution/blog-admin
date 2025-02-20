@@ -21,7 +21,7 @@ export type AllArticles = {
     articles: ArticleResponseType[]
 }
 
-type Tags = {
+export type Tags = {
     "name": string
 }
 
@@ -47,3 +47,13 @@ export type ArticleMetrics = {
     "blog_count": number,
     "research_count": number
 }
+export type CreateArticle = {
+    "title": string,
+    "content": string,
+    "featured_image": string,
+    "status": "draft" | "scheduled" | "published",
+    "published_at": string | null //"2025-02-19T22:53:01.605Z",
+    "tags": Tags[],
+    "categories": "blog" | "research",
+    "is_featured": boolean
+  }

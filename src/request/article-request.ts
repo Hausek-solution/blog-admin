@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios"
 import { axiosInstance } from "../context/axios-context"
-import { AllArticles, ArticleMetrics, ArticleResponseType, Categories, RecentArticles } from "../types/article-type"
+import { AllArticles, ArticleMetrics, ArticleResponseType, Categories, CreateArticle, RecentArticles, Tags } from "../types/article-type"
 
 export const getArticleMetrics = async () : Promise<AxiosResponse<ArticleMetrics, any> | string> => {
     try {
@@ -50,5 +50,19 @@ export const getAllArticles = async (limit: number, skip: number) : Promise<Axio
 
 export const getArticleByStatus = async (status: "draft" | "published" | "scheduled") : Promise<AxiosResponse<ArticleResponseType[], any> | undefined> => {
     const response = axiosInstance.get(`admin/get_article_by_status?status=${status}`)
+    return response
+}
+
+export const createAnArticle = async (data: CreateArticle) : Promise<AxiosResponse<ArticleResponseType, any> | string> => {
+    try {
+        const response = axiosInstance.post('/articles/', data)
+        return response
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+export const getAllTags = async () : Promise<AxiosResponse<Tags[], any> | undefined> => {
+    const response = axiosInstance.get(`articles/tags/all`)
     return response
 }
