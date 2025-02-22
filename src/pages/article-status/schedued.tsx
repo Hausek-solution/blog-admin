@@ -12,6 +12,7 @@ import {
 
 import {
     Dialog,
+    DialogClose,
     DialogContent,
     DialogDescription,
     DialogFooter,
@@ -30,10 +31,12 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { format } from "date-fns"
-import { getArticleByStatus } from "../../request/article-request"
+import { deleteAnArticle, getArticleByStatus } from "../../request/article-request"
 import { AxiosResponse } from "axios"
 import { ApplicationRoutes } from "../../routes/routes-constant"
 import { Link } from "react-router-dom"
+import { displayToast } from "../../helper/toast-displayer"
+import { useToast } from "../../hooks/use-toast"
 
 const ScheduledPage = () => {
     const [activelayout, setAciveLayout] = useState<"list" | "grid">("list")
@@ -50,6 +53,32 @@ const ScheduledPage = () => {
     const [allArticlesLoading, setAllArticleLoading] = useState(false)
     const [allArticles, setAllArticles] = useState<ArticleResponseType[]>([])
 
+    const [deleteArticleLoading, setDeleteArticleLoading] = useState(false)
+    const [selectedArticle, setSelectedArticle] = useState<ArticleResponseType>(null)
+
+    const openDeleteModal = useRef<HTMLDivElement>(null)
+    const closeDeleteModal = useRef<HTMLDivElement>(null)
+    const {toast} = useToast()
+
+    const deleteArticle = async () => {
+        setDeleteArticleLoading(true)
+
+        const response = await deleteAnArticle(selectedArticle?.id)
+
+        const axiosResponse = response as AxiosResponse<any, any>
+        if (axiosResponse.status === 200) {
+            displayToast({
+                message: 'Article deleted',
+                messageType: "success",
+                toast: toast
+            })
+        }
+
+        fetchArticles().then()
+        setDeleteArticleLoading(false)
+        closeDeleteModal.current.click()
+    }
+
 
     const renderArticles = useCallback(() => {
         return (
@@ -65,6 +94,8 @@ const ScheduledPage = () => {
                                 displayLayout={activelayout}
                                 key={art.id}
                                 scheduledBtn={scheduledDialogBtn}
+                                openDeleteBtn={openDeleteModal}
+                                setSelectedArticle={setSelectedArticle}
                             />
                         ))}
                     </div>
@@ -259,6 +290,39 @@ const ScheduledPage = () => {
                     {/* <DialogFooter>
                         <Button className="text-white" type="submit">Change schedule</Button>
                     </DialogFooter> */}
+                </DialogContent>
+            </Dialog>
+
+            <Dialog>
+                <DialogTrigger asChild>
+                    <div ref={openDeleteModal} className="hidden">Scheduled details</div>
+                </DialogTrigger>
+
+                <DialogContent className="sm:max-w-[600px]">
+                    <DialogHeader>
+                        <DialogTitle>Please confirm delete</DialogTitle>
+                    </DialogHeader>
+
+                    <div className="">
+                        <div className=""></div>
+                        <p className="text-center font-raleway font-normal mt-3">Are you sure you want to delete this article</p>
+                        
+                        <div className="flex justify-center">
+                            <Button onClick={deleteArticle} className="text-white mt-8">
+                                { deleteArticleLoading ?  
+                                    <div className="py-7 flex justify-center">
+                                        <LoadingSpinner className={{scale : "70%"}} color="#FFFFFF" loading={true}/>
+                                    </div> :
+                                    <p className="">Delete Article</p>
+                                }
+                            </Button>
+                        </div>
+
+                    </div>
+             
+                    <DialogClose className="hidden">
+                        <div ref={closeDeleteModal} className="text-white">Change schedule</div>
+                    </DialogClose>
                 </DialogContent>
             </Dialog>
         </>

@@ -6,60 +6,7 @@ import { AxiosResponse } from 'axios';
 import { Tags } from '../../types/article-type';
 import Select from "react-select";
 
-const OPTIONS: Option[] = [
-  { label: 'Petrol Station', value: 'PetrolStation' },
-  { label: 'Gas Station', value: 'Gas Station' },
-  { label: 'Diesel Station', value: 'DieselStation' },
-  { label: 'Kerosene Station', value: 'KeroseneStation' },
-];
-
-// const MultipleSelectorControlled = ({ onChange }: { onChange: (tags: Option[]) => void }) => {
-//   const [value, setValue] = React.useState<Option[]>([]);
-
-//   const fetchTags = async () => {
-//     const response = await getAllTags()
-
-//     const axiosResponse = response as AxiosResponse<Tags[], any>
-
-//     if (axiosResponse.status === 200) {
-//         setValue([...axiosResponse.data.map(data => {
-//             return {label: data.name, value: data.name}
-//         })])
-//     }
-//   }
-
-//   const handleChange = (tags: Option[]) => {
-//     setValue(tags);
-//     onChange(tags); // Call the callback function with the selected tags
-//   };
-
-//   useEffect(() => {
-
-//   }, [])
-
-//   return (
-//     <div className="flex w-full flex-col ">
-//       <p className=" mb-3 font-medium">Tags</p>
-//       <MultipleSelector
-//         className='border-gray-400 border py-5'
-//         value={value}
-//         onChange={handleChange}
-//         defaultOptions={OPTIONS}
-//         placeholder="Select station type..."
-//         emptyIndicator={
-//           <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
-//             no results found.
-//           </p>
-//         }
-//       />
-//     </div>
-//   );
-// };
-
-// export default MultipleSelectorControlled;
-
-
-const MultiSelector = ({ onChange }: { onChange: (tags: Option[]) => void }) => {
+const MultiSelector = ({ onChange, previousTags }: { onChange: (tags: Option[]) => void,  previousTags: Option[] }) => {
     const [selectedTags, setSelectedTags] = useState<{ label: string; value: string }[]>([]);
     const [inputValue, setInputValue] = useState("");
     const [options, setOptions] = useState<{ label: string; value: string }[]>([]);
@@ -74,10 +21,14 @@ const MultiSelector = ({ onChange }: { onChange: (tags: Option[]) => void }) => 
         const axiosResponse = response as AxiosResponse<Tags[], any>;
 
         if (axiosResponse.status === 200) {
+            const set2 = new Set(previousTags.map(tag => tag.value));
+            
             const formattedOptions = axiosResponse.data.map(tag => ({
                 label: tag.name, // Display tag name in dropdown
                 value: tag.name // Store ID as string
-            }));
+            })).filter(item => !set2.has(item.value));
+
+            console.log(formattedOptions)
             setOptions(formattedOptions);
         }
     };

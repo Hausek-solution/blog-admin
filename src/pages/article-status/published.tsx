@@ -32,8 +32,10 @@ import { useForm } from "react-hook-form"
 import { format } from "date-fns"
 import { ApplicationRoutes } from "../../routes/routes-constant"
 import { Link } from "react-router-dom"
-import { getArticleByStatus } from "../../request/article-request"
+import { deleteAnArticle, getArticleByStatus } from "../../request/article-request"
 import { AxiosResponse } from "axios"
+import { displayToast } from "../../helper/toast-displayer"
+import { useToast } from "../../hooks/use-toast"
 
 const PublishedPage = () => {
     const [activelayout, setAciveLayout] = useState<"list" | "grid">("list")
@@ -50,6 +52,32 @@ const PublishedPage = () => {
     const [allArticlesLoading, setAllArticleLoading] = useState(false)
     const [allArticles, setAllArticles] = useState<ArticleResponseType[]>([])
 
+    const [selectedArticle, setSelectedArticle] = useState<ArticleResponseType>(null)
+    const [deleteArticleLoading, setDeleteArticleLoading] = useState(false)
+
+    const openDeleteModal = useRef<HTMLDivElement>(null)
+    const closeDeleteModal = useRef<HTMLDivElement>(null)
+    const {toast} = useToast()
+
+    const deleteArticle = async () => {
+        setDeleteArticleLoading(true)
+
+        const response = await deleteAnArticle(selectedArticle?.id)
+
+        const axiosResponse = response as AxiosResponse<any, any>
+        if (axiosResponse.status === 200) {
+            displayToast({
+                message: 'Article deleted',
+                messageType: "success",
+                toast: toast
+            })
+        }
+
+        fetchArticles().then()
+        setDeleteArticleLoading(false)
+        closeDeleteModal.current.click()
+    }
+
 
     const renderArticles = useCallback(() => {
         return (
@@ -65,6 +93,8 @@ const PublishedPage = () => {
                                 displayLayout={activelayout}
                                 key={art.id}
                                 scheduledBtn={scheduledDialogBtn}
+                                openDeleteBtn={openDeleteModal}
+                                setSelectedArticle={setSelectedArticle}
                             />
                         ))}
                     </div>

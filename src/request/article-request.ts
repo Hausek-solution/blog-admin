@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios"
 import { axiosInstance } from "../context/axios-context"
-import { AllArticles, ArticleMetrics, ArticleResponseType, Categories, CreateArticle, RecentArticles, Tags } from "../types/article-type"
+import { AllArticles, ArticleMetrics, ArticleResponseType, Categories, CreateArticle, RecentArticles, Tags, UpdateArticle } from "../types/article-type"
 
 export const getArticleMetrics = async () : Promise<AxiosResponse<ArticleMetrics, any> | string> => {
     try {
@@ -56,6 +56,24 @@ export const getArticleByStatus = async (status: "draft" | "published" | "schedu
 export const createAnArticle = async (data: CreateArticle) : Promise<AxiosResponse<ArticleResponseType, any> | string> => {
     try {
         const response = axiosInstance.post('/articles/', data)
+        return response
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+export const updateAnArticle = async (data: UpdateArticle) : Promise<AxiosResponse<ArticleResponseType, any> | string> => {
+    try {
+        const response = axiosInstance.put(`/articles/${data.article_id}`, data.data)
+        return response
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+export const deleteAnArticle = async (article_id: number) : Promise<AxiosResponse<any, any> | string> => {
+    try {
+        const response = axiosInstance.delete(`/articles/${article_id}`)
         return response
     } catch (e) {
         console.log(e)

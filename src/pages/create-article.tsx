@@ -410,13 +410,13 @@ const CreateArticlePage = () => {
         setSelectedTags(tags);
         // You can now use the selected tags in this component
         console.log('Selected Tags:', tags);
-      };
+    };
 
     const saveArticle = async (status: "draft" | "scheduled" | "published") => {
-        setSaveArticleLoading(true)
 
         if (editorInstance.current) {
             const savedData = await editorInstance.current.save();
+            setEditorData(savedData);
 
             if (imageFile === null) {
                 displayToast({
@@ -433,6 +433,8 @@ const CreateArticlePage = () => {
                     messageType: "error",
                     toast: toast
                 })
+
+                return
             }
 
             if (title === "") {
@@ -441,7 +443,11 @@ const CreateArticlePage = () => {
                     messageType: "error",
                     toast: toast
                 })
+
+                return
             }
+
+            setSaveArticleLoading(true)
 
             const formData = new FormData()
             formData.append("file", imageFile);
@@ -458,7 +464,7 @@ const CreateArticlePage = () => {
 
                 const response = await createAnArticle({
                     categories: category,
-                    content: JSON.stringify(saveData),
+                    content: JSON.stringify(savedData),
                     featured_image: axioResponse.data.image_url[0],
                     is_featured: isFeatured,
                     published_at: getPublishingTime(status),
@@ -482,6 +488,7 @@ const CreateArticlePage = () => {
                     })
                 }
             }
+
         }
 
         setSaveArticleLoading(false)
@@ -616,7 +623,7 @@ const CreateArticlePage = () => {
                 <div className='pt-10'>
                     {/* <MultipleSelectorControlled onChange={handleTagsChange}/> */}
                     <p className="text-xl font-medium mb-5">Tags <span className='font-raleway font-normal text-sm'>( Please select at least one tag )</span></p>
-                    <MultiSelector onChange={handleTagsChange}/>
+                    <MultiSelector onChange={handleTagsChange} previousTags={[]}/>
                 </div>
                 
 

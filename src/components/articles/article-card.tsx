@@ -3,18 +3,20 @@ import { ArticleResponseType, RecentArticles } from "../../types/article-type"
 import { Button } from "../../components/ui/button"
 import { Link } from "react-router-dom"
 import { ApplicationRoutes } from "../../routes/routes-constant"
-import { Dispatch, SetStateAction } from "react"
+import { Dispatch, SetStateAction, useRef, useState } from "react"
 import { format } from "date-fns"
+import { LucideTrash2 } from "lucide-react"
 
 
 type ArticleCardProps = {
     data: ArticleResponseType,
     displayLayout: "list" | "grid",
     scheduledBtn: React.MutableRefObject<HTMLDivElement>,
-    setSelectedArticle?: Dispatch<SetStateAction<ArticleResponseType>>
+    openDeleteBtn: React.MutableRefObject<HTMLDivElement>,
+    setSelectedArticle?: Dispatch<SetStateAction<ArticleResponseType>>,
 }
 
-const ArticleCard = ({ data, displayLayout, scheduledBtn, setSelectedArticle}: ArticleCardProps) => {
+const ArticleCard = ({ data, displayLayout, openDeleteBtn, scheduledBtn, setSelectedArticle}: ArticleCardProps) => {
 
     return (
         <>
@@ -69,22 +71,28 @@ const ArticleCard = ({ data, displayLayout, scheduledBtn, setSelectedArticle}: A
                             </div>
 
                         </div>
+                        
+                        <div className="flex items-center justify-between">
+                            
+                            <div className="flex items-center space-x-2">
+                                { data.status === "draft" &&
+                                    <Link to={`${ApplicationRoutes.PRE_UPDATE}/${data.slug}`} className="text-base text-secondary font-medium">Continue editing</Link>
+                                }
+                                { data.status === "published" &&
+                                    <p className="text-base text-secondary font-medium">View</p>
+                                }
+                                { data.status === "scheduled" &&
+                                    <p onClick={() => {setSelectedArticle(data);scheduledBtn.current.click()}} className="text-base text-secondary font-medium">See schedule</p>
+                                }
+                            </div>
 
-                        <div className="flex items-center space-x-2">
-                            { data.status === "draft" &&
-                                <Link to={`${ApplicationRoutes.PRE_UPDATE}/${data.slug}`} className="text-base text-secondary font-medium">Continue editing</Link>
-                            }
-                            { data.status === "published" &&
-                                <p className="text-base text-secondary font-medium">View</p>
-                            }
-                            { data.status === "scheduled" &&
-                                <p onClick={() => {setSelectedArticle(data);scheduledBtn.current.click()}} className="text-base text-secondary font-medium">See schedule</p>
-                            }
+                            <div className="">
+                                <LucideTrash2 className="text-red-500 cursor-pointer" size={19} onClick={() => {setSelectedArticle(data); openDeleteBtn.current.click()}}/>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </>
     )
 }

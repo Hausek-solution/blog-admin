@@ -57,3 +57,8 @@ export type CreateArticle = {
     "categories": "blog" | "research",
     "is_featured": boolean
   }
+
+  export type UpdateArticle = {
+    article_id: number,
+    data: CreateArticle
+  }
