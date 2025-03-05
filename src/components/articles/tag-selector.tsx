@@ -1,10 +1,10 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import MultipleSelector, {Option} from '../ui/multiple-selector';
+import Select from "react-select";
 import { getAllTags } from '../../request/article-request';
 import { AxiosResponse } from 'axios';
 import { Tags } from '../../types/article-type';
-import Select from "react-select";
+import {Option} from '../../components/ui/multiple-selector';
 
 const MultiSelector = ({ onChange, previousTags }: { onChange: (tags: Option[]) => void,  previousTags: Option[] }) => {
     const [selectedTags, setSelectedTags] = useState<{ label: string; value: string }[]>([]);
@@ -50,7 +50,9 @@ const MultiSelector = ({ onChange, previousTags }: { onChange: (tags: Option[]) 
             }
 
             if (!alreadySelected) {
-                setSelectedTags((prevTags) => [...prevTags, newTag]);
+                const updatedTags = [...selectedTags, newTag];
+                setSelectedTags(updatedTags);
+                onChange(updatedTags);
             }
 
             setInputValue(""); // Clear input
@@ -72,4 +74,4 @@ const MultiSelector = ({ onChange, previousTags }: { onChange: (tags: Option[]) 
     );
 };
 
-export default MultiSelector
+export default MultiSelector;

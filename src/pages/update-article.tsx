@@ -45,6 +45,7 @@ import { Label } from '../components/ui/label';
 import MultiSelector from '../components/articles/tag-selector';
 import { displayToast } from '../helper/toast-displayer';
 import { useToast } from '../hooks/use-toast';
+import { Textarea } from '../components/ui/textarea';
 
 const UpdateArticlePage = () => {
     const [editorLoading, setEditorLoading] = useState(false)
@@ -65,6 +66,7 @@ const UpdateArticlePage = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [previewURL, setPreviewURL] = useState('');
     const [saveArticleLoading, setSaveArticleLoading] = useState(false)
+    const [shortContent, setShortContent] = useState("")
     const { toast } = useToast()
     const [reload, setReload] = useState(false)
 
@@ -81,6 +83,7 @@ const UpdateArticlePage = () => {
             setIsFeatured(axiosResponse.data.is_featured)
             setPreviousTags(axiosResponse.data.tags.map(t => {return { label: t.name, value: t.name}}))
             setTitle(axiosResponse.data.title)
+            setShortContent(axiosResponse.data.short_content)
         }
 
         setEditorLoading(false)
@@ -236,7 +239,7 @@ const UpdateArticlePage = () => {
                     
                                 return (
                                     <ListTag
-                                        className={`cdx-block cdx-list`}
+                                        className={``}
                                         style={{
                                             marginLeft: `${indentLevel * 20}px`, // Apply indent dynamically
                                             listStyleType: listStyleType, // Apply list-style-type
@@ -421,7 +424,8 @@ const UpdateArticlePage = () => {
                     published_at: getPublishingTime(status),
                     status: status,
                     tags: [...formattedTags, ...previousFormattedTags],
-                    title: title
+                    title: title,
+                    short_content: shortContent
                 }
             })
 
@@ -553,6 +557,21 @@ const UpdateArticlePage = () => {
                             </div>
                         </div>
 
+                        <div className="grid w-full gap-1.5 mt-10">
+                            <Label htmlFor="message-2" className='text-xl font-medium mb-3'>Short Decrription of Article</Label>
+                            <Textarea 
+                                placeholder="Type description" 
+                                id="message-2" 
+                                className='border resize-none text-base border-gray-400 max-w-xl h-56 font-raleway'
+                                onChange={(e)=>{setShortContent(e.target.value)}}
+                                value={shortContent}
+                                maxLength={255}
+                            />
+                            <p className="text-sm font-normal text-muted-foreground">
+                                This will appear as a brief summary of what the article is about (Max 255 characters)
+                            </p>
+                        </div>
+
                         <div className='pt-8'>
                             <p className="text-xl mb-3 font-medium">Category</p>
 
@@ -591,7 +610,9 @@ const UpdateArticlePage = () => {
                         </div>
 
                         <div className='flex items-center space-x-3 mt-5'>
-                            <div className='bg-secondary text-white px-3 py-1 rounded-full'>{previousTags.map(tags => tags.value)}</div>
+                            {previousTags.map(tags => (
+                                <div key={tags.value} className='bg-secondary text-white px-3 py-1 rounded-full'>{tags.value}</div>
+                            ))}
                         </div>
 
                         <div className="mt-16">
@@ -621,7 +642,7 @@ const UpdateArticlePage = () => {
                                     <div ref={previewSheet} className='hidden'>Open</div>
                                 </CustomSheetTrigger>
                                 
-                                <CustomSheetContent className='bg-white blog-container font-raleway' side='bottom'>
+                                <CustomSheetContent className='bg-white blog-container font-raleway overflow-y-auto' side='bottom'>
                                     <CustomSheetHeader>
                                     <CustomSheetTitle className='pb-14'>Preview Article</CustomSheetTitle>
 

@@ -211,7 +211,7 @@ const AllArticlesPage = () => {
                                     publishDate={selectedArticle?.published_at}
                                 />
 
-                                <div className="">
+                                {/* <div className="">
                                     { !changeSchedule ?
                                         <p onClick={()=> {setChangeSchedule(true)}} className="text-center text-secondary cursor-pointer">Change schedule</p> :
                                         
@@ -280,7 +280,7 @@ const AllArticlesPage = () => {
                                             </form>
                                         </Form>
                                     }
-                                </div>
+                                </div> */}
                             </div>
                         }
 

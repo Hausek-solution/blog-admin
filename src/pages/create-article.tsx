@@ -69,6 +69,8 @@ import { useToast } from '../hooks/use-toast';
 import { ArticleResponseType, Tags } from '../types/article-type';
 import {Option} from '../components/ui/multiple-selector';
 import MultiSelector from '../components/articles/tag-selector';
+import { Textarea } from '../components/ui/textarea';
+import { ApplicationRoutes } from '../routes/routes-constant';
 
 
 const CreateArticlePage = () => {
@@ -91,6 +93,7 @@ const CreateArticlePage = () => {
     const [category, setCategory] = useState<'blog' | 'research'>("blog")
     const [imageFile, setImageFile] = useState<File>(null)
     const [selectedTags, setSelectedTags] = React.useState<Option[]>([]);
+    const [shortContent, setShortContent] = useState("")
 
     // create Article details
     const [featuredImage, setFeaturedImage] = useState("")
@@ -404,6 +407,7 @@ const CreateArticlePage = () => {
         const pDate =  new Date().toISOString()
         if (status === "draft") return null
         if (status === "published") return pDate 
+        if (status === "scheduled") return date.toISOString()
     }
 
     const handleTagsChange = (tags: Option[]) => {
@@ -413,7 +417,6 @@ const CreateArticlePage = () => {
     };
 
     const saveArticle = async (status: "draft" | "scheduled" | "published") => {
-
         if (editorInstance.current) {
             const savedData = await editorInstance.current.save();
             setEditorData(savedData);
@@ -447,6 +450,17 @@ const CreateArticlePage = () => {
                 return
             }
 
+            if (shortContent === "") {
+                displayToast({
+                    message: "Short description cannot be blank",
+                    messageType: "error",
+                    toast: toast
+                })
+
+                return
+            }
+
+
             setSaveArticleLoading(true)
 
             const formData = new FormData()
@@ -470,7 +484,8 @@ const CreateArticlePage = () => {
                     published_at: getPublishingTime(status),
                     status: status,
                     tags: formattedTags,
-                    title: title
+                    title: title,
+                    short_content: shortContent
                 })
 
                 const createResponse = response as AxiosResponse<ArticleResponseType, any>
@@ -480,6 +495,7 @@ const CreateArticlePage = () => {
                         messageType: "success",
                         toast: toast
                     })
+                    window.location.replace(ApplicationRoutes.ALL_ARTICLES)
                 } else {
                     displayToast({
                         message: response as string,
@@ -590,7 +606,22 @@ const CreateArticlePage = () => {
                     </div>
                 </div>
 
-                <div className='pt-8'>
+                <div className="grid w-full gap-1.5 mt-10">
+                    <Label htmlFor="message-2" className='text-xl font-medium mb-3'>Short Decrription of Article</Label>
+                    <Textarea 
+                        placeholder="Type description" 
+                        id="message-2" 
+                        className='border resize-none text-base border-gray-400 max-w-xl h-56 font-raleway'
+                        onChange={(e)=>{setShortContent(e.target.value)}}
+                        value={shortContent}
+                        maxLength={255}
+                    />
+                    <p className="text-sm font-normal text-muted-foreground">
+                        This will appear as a brief summary of what the article is about (Max 255 characters)
+                    </p>
+                </div>
+
+                <div className='pt-8 mt-14'>
                     <p className="text-xl mb-3 font-medium">Category</p>
 
                     <RadioGroup 
@@ -759,10 +790,10 @@ const CreateArticlePage = () => {
                                         </div>
                                         
                                         <div className="flex items-center justify-center pb-5">
-                                            <Button className="text-white">
-                                                { scheduleDate ? 
+                                            <Button disabled={date === undefined || date === null} onClick={(e) =>{e.preventDefault(); saveArticle("scheduled")}} className="text-white disabled:bg-gray-500">
+                                                { saveArticleLoading ? 
                                                     <span className="">
-                                                        <LoadingSpinner color="#FFFFFF" className={{scale : "50%"}} loading={scheduleDate}/>
+                                                        <LoadingSpinner color="#FFFFFF" className={{scale : "50%"}} loading={saveArticleLoading}/>
                                                     </span> :
                                                     <p className="">Set Schedule</p>
                                                 }

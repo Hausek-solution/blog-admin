@@ -12,7 +12,8 @@ export type ArticleResponseType = {
     "id": number,
     "slug": string,
     "created_at": string,
-    "updated_at": string
+    "updated_at": string,
+    "short_content": string
     
 }
 
@@ -37,6 +38,7 @@ export type RecentArticles = {
     "categories": "research" | "blog",
     "is_featured": boolean,
     "status": "draft" | "published" | "scheduled",
+    "short_content": string
 
 }
 export type ArticleMetrics = {
@@ -55,7 +57,8 @@ export type CreateArticle = {
     "published_at": string | null //"2025-02-19T22:53:01.605Z",
     "tags": Tags[],
     "categories": "blog" | "research",
-    "is_featured": boolean
+    "is_featured": boolean,
+    "short_content": string
   }
 
   export type UpdateArticle = {

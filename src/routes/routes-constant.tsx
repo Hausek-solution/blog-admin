@@ -19,5 +19,5 @@ export const ApplicationRoutes = {
     RECENTLY_UPDATED: "/articles/recently-updated",
     RECENTLY_PUSBLISHED: "/articles/recently-published",
 
-    ARTICLE_DETAILS: "/article/:slug"
+    ARTICLE_DETAILS: "/articles/:slug"
 }

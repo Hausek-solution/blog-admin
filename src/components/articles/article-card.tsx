@@ -38,7 +38,7 @@ const ArticleCard = ({ data, displayLayout, openDeleteBtn, scheduledBtn, setSele
                 </div>
 
                 <div className="p-2 px-4 relative">
-                    <div className="flex justify-between items-center">
+                    <div className="flex mb-2 justify-between items-center">
                         <p className="font-semibold text-primary text-lg pt-2">{data.title}</p>
                         <div className={cn("px-4 capitalize py-1 rounded-full",
                             {"bg-gray-300": data.status === "draft"},
@@ -49,40 +49,54 @@ const ArticleCard = ({ data, displayLayout, openDeleteBtn, scheduledBtn, setSele
                         </div>
                     </div>
 
-                    <p className={cn("py-2", {"hidden": displayLayout === "grid"})}>{data.content.slice(0, data.content.lastIndexOf(" ", 140))}...</p>
+                    <p className={cn("py-2 font-normal", {"hidden": displayLayout === "grid"})}>{data.short_content.slice(0, data.short_content.lastIndexOf(" ", 140))}...</p>
 
                     <div className={cn("flex-col gap-y-8 justify-between ipad:flex-row items-center pt-3 border-t py-2", {"border-none": displayLayout === "grid"})}>
-                        <div className="flex flex-col gap-y-2">
-                            <div className="flex items-center space-x-2 text-sm">
-                                { data.status === "scheduled" ?
-                                        <p className="">To Publish on</p> :
-                                        <p className="">Published</p>
-                                }
-                                <p className="text-sm text-gray-500">{data.published_at ? format(data.published_at, "do MMMM yyyy 'by' h:mma"): ""}</p>
-                            </div>
-                            <div className="flex items-center space-x-2 text-sm">
-                                <p className="">Created on</p>
-                                <p className="text-sm text-gray-500">{data.created_at ? format(data.created_at, "do MMMM yyyy 'at' h:mma"): ""}</p>
+                        <div className="flex justify-between items-center">
+                            <div className="flex flex-col gap-y-2">
+                                <div className="flex items-center space-x-2 text-sm">
+                                    { data.status === "scheduled" ?
+                                            <p className="">To Publish on</p> :
+                                            <p className="">Published</p>
+                                    }
+                                    <p className="text-sm text-gray-500">{data.published_at ? format(data.published_at, "do MMMM yyyy 'by' h:mma"): ""}</p>
+                                </div>
+                                <div className="flex items-center space-x-2 text-sm">
+                                    <p className="">Created on</p>
+                                    <p className="text-sm text-gray-500">{data.created_at ? format(data.created_at, "do MMMM yyyy 'at' h:mma"): ""}</p>
+                                </div>
+
+                                <div className="flex items-center space-x-2 text-sm">
+                                    <p className="">Last updated</p>
+                                    <p className="text-sm text-gray-500">{data.updated_at ? format(data.updated_at, "do MMMM yyyy 'at' h:mma"): ""}</p>
+                                </div>
                             </div>
 
-                            <div className="flex items-center space-x-2 text-sm">
-                                <p className="">Last updated</p>
-                                <p className="text-sm text-gray-500">{data.updated_at}</p>
-                            </div>
+                            <p className="font-raleway font-semibold capitalize text-gray-400">{data.categories}</p>
 
                         </div>
                         
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between mt-5">
                             
                             <div className="flex items-center space-x-2">
                                 { data.status === "draft" &&
-                                    <Link to={`${ApplicationRoutes.PRE_UPDATE}/${data.slug}`} className="text-base text-secondary font-medium">Continue editing</Link>
+                                    <div className="flex items-center space-x-2">
+                                        <Link to={`${ApplicationRoutes.PRE_UPDATE}/${data.slug}`} className="text-base text-secondary font-medium">Continue editing</Link>
+                                        <Link to={`${ApplicationRoutes.ALL_ARTICLES}/${data.slug}`} className="text-base text-secondary font-medium border-r pr-2 border-gray-400">View</Link>
+                                    </div>
                                 }
                                 { data.status === "published" &&
-                                    <p className="text-base text-secondary font-medium">View</p>
+                                    <div className="flex items-center space-x-2">
+                                        <Link to={`${ApplicationRoutes.ALL_ARTICLES}/${data.slug}`} className="text-base text-secondary font-medium border-r pr-2 border-gray-400">View</Link>
+                                        <Link to={`${ApplicationRoutes.PRE_UPDATE}/${data.slug}`} className="text-base text-blue-500 font-medium">Edit</Link>
+                                    </div>
                                 }
                                 { data.status === "scheduled" &&
-                                    <p onClick={() => {setSelectedArticle(data);scheduledBtn.current.click()}} className="text-base text-secondary font-medium">See schedule</p>
+                                    <div className="flex items-center space-x-2">
+                                        <p onClick={() => {setSelectedArticle(data);scheduledBtn.current.click()}} className="text-base text-secondary font-medium border-r pr-2 border-gray-400">See schedule</p>
+                                        <Link to={`${ApplicationRoutes.PRE_UPDATE}/${data.slug}`} className="text-base text-blue-500 font-medium border-r pr-2 border-gray-400">Edit</Link>
+                                        <Link to={`${ApplicationRoutes.ALL_ARTICLES}/${data.slug}`} className="text-base text-amber-700 font-medium">View</Link>
+                                    </div>
                                 }
                             </div>
 
