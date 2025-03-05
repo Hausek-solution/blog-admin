@@ -36,64 +36,6 @@ import { ApplicationRoutes } from "../../routes/routes-constant"
 import { Link } from "react-router-dom"
 import RecentArticleCard from "../../components/articles/recent-article-card"
 
-const dummyArticles : ArticleResponseType[] = [
-    {
-        categories: "blog",
-        featured_image: '/images/dummy/blog.jpg',
-        id: 1,
-        is_featured: false,
-        published_at: null,
-        slug: 'sks-ssjdjd-sjdjd',
-        title: 'Test of Title of article',
-        content: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Provident suscipit nostrum dolorum eius expedita accusantium ducimus ad incidunt quam illo ut eaque natus mollitia voluptas temporibus beatae at, totam neque?",
-        created_at: "2025-02-03",
-        status: "published",
-        tags: [{name: "Housing"}, {name: "Agency"}],
-        updated_at: null
-    },
-    {
-        categories: "blog",
-        featured_image: '/images/dummy/blog.jpg',
-        id: 2,
-        is_featured: false,
-        published_at: null,
-        slug: 'sks-ssjdjd-sjdjd',
-        title: 'Test of Title of article',
-        content: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Provident suscipit nostrum dolorum eius expedita accusantium ducimus ad incidunt quam illo ut eaque natus mollitia voluptas temporibus beatae at, totam neque?",
-        created_at: "2025-02-03",
-        status: "published",
-        tags: [{name: "Housing"}, {name: "Agency"}],
-        updated_at: null
-    },
-    {
-        categories: "blog",
-        featured_image: '/images/dummy/blog2.jpg',
-        id: 3,
-        is_featured: false,
-        published_at: null,
-        slug: 'sks-ssjdjd-sjdjd',
-        title: 'Test of Title of article',
-        content: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Provident suscipit nostrum dolorum eius expedita accusantium ducimus ad incidunt quam illo ut eaque natus mollitia voluptas temporibus beatae at, totam neque?",
-        created_at: "2025-02-03",
-        status: "published",
-        tags: [{name: "Housing"}, {name: "Agency"}],
-        updated_at: null
-    },
-    {
-        categories: "research",
-        featured_image: '/images/dummy/dummy2.jpg',
-        id: 4,
-        is_featured: false,
-        published_at: null,
-        slug: 'sks-ssjdjd-sjdjd',
-        title: 'Test of Title of article',
-        content: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Provident suscipit nostrum dolorum eius expedita accusantium ducimus ad incidunt quam illo ut eaque natus mollitia voluptas temporibus beatae at, totam neque?",
-        created_at: "2025-02-03",
-        status: "published",
-        tags: [{name: "Housing"}, {name: "Agency"}],
-        updated_at: null
-    },
-]
 
 const RecentlyUpdated = () => {
     const [activelayout, setAciveLayout] = useState<"list" | "grid">("list")
