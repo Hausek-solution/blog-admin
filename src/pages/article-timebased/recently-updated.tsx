@@ -1,6 +1,6 @@
 import { LucideCalendarSearch, LucideGrid, LucideLayoutGrid, LucideList } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
-import { ArticleResponseType, RecentArticles } from "../../types/article-type"
+import { ArticleResponseType, RecentArticleResponse, RecentArticles } from "../../types/article-type"
 import ArticleCard from "../../components/articles/article-card"
 import { cn } from "../../lib/utils"
 import CustomPagination from "../../components/articles/custom-pagination"
@@ -50,7 +50,7 @@ const RecentlyUpdated = () => {
     const [open, setOpen] = useState(false)
 
     const [allArticlesLoading, setAllArticleLoading] = useState(false)
-    const [allArticles, setAllArticles] = useState<RecentArticles[]>([])
+    const [allArticles, setAllArticles] = useState<RecentArticleResponse[]>([])
 
     const renderArticles = useCallback(() => {
         return (
@@ -97,9 +97,9 @@ const RecentlyUpdated = () => {
         setAllArticleLoading(true)
         const response = await getRecentUpdated(5)
 
-        const axioResponse = response as AxiosResponse<RecentArticles[], any>
+        const axioResponse = response as AxiosResponse<RecentArticles, any>
         if (axioResponse.status === 200) {
-            setAllArticles(axioResponse.data)
+            setAllArticles(axioResponse.data.items)
         }
 
         setAllArticleLoading(false)

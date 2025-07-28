@@ -29,6 +29,13 @@ export type Tags = {
 export type Categories = "blog" | "research"
 
 export type RecentArticles = {
+    items: RecentArticleResponse[],
+    limit: number,
+    page: number,
+    total_items: number
+}
+
+export type RecentArticleResponse = {
     "id": number,
     "title": string,
     "slug": string,
@@ -37,10 +44,10 @@ export type RecentArticles = {
     "updated_at": string | null,
     "categories": "research" | "blog",
     "is_featured": boolean,
+    "short_content": string,
     "status": "draft" | "published" | "scheduled",
-    "short_content": string
-
 }
+
 export type ArticleMetrics = {
     "article_count": number,
     "published": number,

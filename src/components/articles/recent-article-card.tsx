@@ -1,5 +1,5 @@
 import { cn } from "../../lib/utils"
-import { ArticleResponseType, RecentArticles } from "../../types/article-type"
+import { ArticleResponseType, RecentArticleResponse, RecentArticles } from "../../types/article-type"
 import { Button } from "../../components/ui/button"
 import { Link } from "react-router-dom"
 import { ApplicationRoutes } from "../../routes/routes-constant"
@@ -7,7 +7,7 @@ import { format } from "date-fns"
 
 
 type RecentArticleCardProps = {
-    data: RecentArticles,
+    data: RecentArticleResponse,
     displayLayout: "list" | "grid",
     scheduledBtn: React.MutableRefObject<HTMLDivElement>
 }

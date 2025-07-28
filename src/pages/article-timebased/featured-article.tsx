@@ -1,6 +1,6 @@
 import { LucideCalendarSearch, LucideGrid, LucideLayoutGrid, LucideList, LucideSearch } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
-import { ArticleResponseType, RecentArticles } from "../../types/article-type"
+import { ArticleResponseType, RecentArticleResponse, RecentArticles } from "../../types/article-type"
 import ArticleCard from "../../components/articles/article-card"
 import { cn } from "../../lib/utils"
 import CustomPagination from "../../components/articles/custom-pagination"
@@ -50,7 +50,7 @@ const FeaturedArticle = () => {
     const [open, setOpen] = useState(false)
 
     const [allArticlesLoading, setAllArticleLoading] = useState(false)
-    const [allArticles, setAllArticles] = useState<RecentArticles[]>([])
+    const [allArticles, setAllArticles] = useState<RecentArticleResponse[]>([])
     const [searchVisible, setSearchVisible] = useState(false)
 
 
@@ -99,10 +99,10 @@ const FeaturedArticle = () => {
         setAllArticleLoading(true)
         const response = await getFeaturedArticles()
 
-        const axioResponse = response as AxiosResponse<RecentArticles[], any>
+        const axioResponse = response as AxiosResponse<RecentArticles, any>
         if (axioResponse.status === 200) {
             console.log(axioResponse.data)
-            setAllArticles(axioResponse.data)
+            setAllArticles(axioResponse.data.items)
         }
 
         setAllArticleLoading(false)

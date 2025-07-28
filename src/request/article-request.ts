@@ -11,17 +11,17 @@ export const getArticleMetrics = async () : Promise<AxiosResponse<ArticleMetrics
     }
 }
 
-export const getRecentArticles = async (limit: number) : Promise<AxiosResponse<RecentArticles[], any> | undefined> => {
+export const getRecentArticles = async (limit: number) : Promise<AxiosResponse<RecentArticles, any> | undefined> => {
     const response = axiosInstance.get(`articles/recent_articles?limit=${limit}`)
     return response
 }
 
-export const getRecentUpdated = async (limit: number) : Promise<AxiosResponse<RecentArticles[], any> | undefined> => {
+export const getRecentUpdated = async (limit: number) : Promise<AxiosResponse<RecentArticles, any> | undefined> => {
     const response = axiosInstance.get(`articles/recently_updated?limit=${limit}`)
     return response
 }
 
-export const getArticlesBasedOnCategories = async (limit: number, category: Categories, skip: number) : Promise<AxiosResponse<RecentArticles[], any> | undefined> => {
+export const getArticlesBasedOnCategories = async (limit: number, category: Categories, skip: number) : Promise<AxiosResponse<RecentArticles, any> | undefined> => {
     const response = axiosInstance.get(`articles/categories/${category}?limit=${limit}&skip=${skip}`)
     return response
 }
@@ -31,12 +31,12 @@ export const getArticlebySlug = async (slug: string) : Promise<AxiosResponse<Art
     return response
 }
 
-export const getRelatedArticles = async (article_id: number, limit: number) : Promise<AxiosResponse<RecentArticles[], any> | undefined> => {
+export const getRelatedArticles = async (article_id: number, limit: number) : Promise<AxiosResponse<RecentArticles, any> | undefined> => {
     const response = axiosInstance.get(`articles/${article_id}/related_article?limit=${limit}`)
     return response
 }
 
-export const getFeaturedArticles = async () : Promise<AxiosResponse<RecentArticles[], any> | undefined> => {
+export const getFeaturedArticles = async () : Promise<AxiosResponse<RecentArticles, any> | undefined> => {
     const response = axiosInstance.get(`articles/featured_article`)
     return response
 }
