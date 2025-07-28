@@ -4,6 +4,7 @@ import AppSidebar from "./app-sidebar"
 
 const DashboardLayout = ({children}: {children: ReactNode}) => {
 
+    
     return (
         <>
             <main className="font-outfit overflow-x-hidden">
