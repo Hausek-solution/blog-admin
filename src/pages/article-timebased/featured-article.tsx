@@ -99,10 +99,10 @@ const FeaturedArticle = () => {
         setAllArticleLoading(true)
         const response = await getFeaturedArticles()
 
-        const axioResponse = response as AxiosResponse<RecentArticles, any>
+        const axioResponse = response as AxiosResponse<RecentArticleResponse[], any>
         if (axioResponse.status === 200) {
             console.log(axioResponse.data)
-            setAllArticles(axioResponse.data.items)
+            setAllArticles(axioResponse.data)
         }
 
         setAllArticleLoading(false)
