@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios"
 import { axiosInstance } from "../context/axios-context"
-import { AllArticles, ArticleMetrics, ArticleResponseType, Categories, CreateArticle, RecentArticles, Tags, UpdateArticle } from "../types/article-type"
+import { AllArticles, ArticleMetrics, ArticleResponseType, Categories, CreateArticle, RecentArticleResponse, RecentArticles, Tags, UpdateArticle } from "../types/article-type"
 
 export const getArticleMetrics = async () : Promise<AxiosResponse<ArticleMetrics, any> | string> => {
     try {
@@ -36,7 +36,7 @@ export const getRelatedArticles = async (article_id: number, limit: number) : Pr
     return response
 }
 
-export const getFeaturedArticles = async () : Promise<AxiosResponse<RecentArticles, any> | undefined> => {
+export const getFeaturedArticles = async () : Promise<AxiosResponse<RecentArticleResponse[], any> | undefined> => {
     const response = axiosInstance.get(`articles/featured_article`)
     return response
 }
